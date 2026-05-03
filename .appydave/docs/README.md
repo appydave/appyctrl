@@ -21,6 +21,7 @@ All strategy, design, and operational documentation for the AppyCtrl fork.
 
 | Doc | What it covers |
 |-----|---------------|
+| [upstream-refresh-runbook.md](upstream-refresh-runbook.md) | **Step-by-step upstream rebase sequence** — lessons from first live run, conflict resolution guide |
 | [boot-sequence.md](boot-sequence.md) | Dev-mode startup race condition, why the fetch-timeout and splash-pending patches exist, what a proper upstream fix would look like |
 
 ## Patches
