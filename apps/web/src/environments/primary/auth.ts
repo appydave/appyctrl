@@ -92,7 +92,7 @@ function getDesktopBootstrapCredential(): string | null {
 
 export async function fetchSessionState(): Promise<AuthSessionState> {
   return retryTransientBootstrap(async () => {
-    const response = await fetch(resolvePrimaryEnvironmentHttpUrl("/api/auth/session"), {
+    const response = await fetchWithBootstrapTimeout(resolvePrimaryEnvironmentHttpUrl("/api/auth/session"), {
       credentials: "include",
     });
     if (!response.ok) {
@@ -147,7 +147,7 @@ function toFriendlyBootstrapErrorMessage(status: number, message: string): strin
 async function exchangeBootstrapCredential(credential: string): Promise<AuthBootstrapResult> {
   return retryTransientBootstrap(async () => {
     const payload: AuthBootstrapInput = { credential };
-    const response = await fetch(resolvePrimaryEnvironmentHttpUrl("/api/auth/bootstrap"), {
+    const response = await fetchWithBootstrapTimeout(resolvePrimaryEnvironmentHttpUrl("/api/auth/bootstrap"), {
       body: JSON.stringify(payload),
       credentials: "include",
       headers: {
@@ -188,6 +188,25 @@ async function waitForAuthenticatedSessionAfterBootstrap(): Promise<AuthSessionS
 const TRANSIENT_BOOTSTRAP_STATUS_CODES = new Set([502, 503, 504]);
 const BOOTSTRAP_RETRY_TIMEOUT_MS = 15_000;
 const BOOTSTRAP_RETRY_STEP_MS = 500;
+// [APPYDAVE-PATCH id="fetch-timeout" type="bug-fix"]
+// Upstream opens the Electron window before backend is ready in dev mode (main.ts:2084).
+// The window creation is deliberate upstream design — no external fix is possible.
+// fetch() calls here have no timeout, so they hang if backend accepts TCP but hasn't
+// initialised auth routes yet. AbortController adds an 8s gate so retryTransientBootstrap
+// can cycle and eventually succeed once the backend is fully up.
+// Remove when: upstream wraps fetch calls with AbortController natively.
+const BOOTSTRAP_REQUEST_TIMEOUT_MS = 8_000;
+
+export function fetchWithBootstrapTimeout(
+  input: string,
+  init?: RequestInit,
+): Promise<Response> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), BOOTSTRAP_REQUEST_TIMEOUT_MS);
+  return fetch(input, { ...init, signal: controller.signal }).finally(() =>
+    clearTimeout(timer),
+  );
+}
 
 export async function retryTransientBootstrap<T>(operation: () => Promise<T>): Promise<T> {
   const startedAt = Date.now();
