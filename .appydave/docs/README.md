@@ -24,6 +24,14 @@ All strategy, design, and operational documentation for the AppyCtrl fork.
 | [upstream-refresh-runbook.md](upstream-refresh-runbook.md) | **Step-by-step upstream rebase sequence** — lessons from first live run, conflict resolution guide |
 | [boot-sequence.md](boot-sequence.md) | Dev-mode startup race condition, why the fetch-timeout and splash-pending patches exist, what a proper upstream fix would look like |
 
+## Logs
+
+| File | What it covers |
+|------|---------------|
+| [../logs/upstream-log.md](../logs/upstream-log.md) | What Theo ships each refresh — feature summaries, overlap flags |
+| [../logs/appydave-log.md](../logs/appydave-log.md) | What we build — status tracking per feature |
+| [../logs/gap-analysis.md](../logs/gap-analysis.md) | Overlaps between the two — decision framework for integration vs divergence |
+
 ## Patches
 
 | File | What it covers |
