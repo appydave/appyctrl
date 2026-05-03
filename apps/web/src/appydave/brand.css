@@ -1,0 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&display=swap");
+
+/* AppyDave warm dark colour tokens — override upstream cold-neutral dark mode */
+@variant dark {
+  --background: #1a1515;
+  --app-chrome-background: #1a1515;
+  --foreground: #faf5ec;
+  --card: #25201e;
+  --card-foreground: #faf5ec;
+  --popover: #25201e;
+  --popover-foreground: #faf5ec;
+  --primary: #ffde59;
+  --primary-foreground: #342d2d;
+  --secondary: color-mix(in srgb, #ccba9d 12%, transparent);
+  --secondary-foreground: #faf5ec;
+  --muted: color-mix(in srgb, #faf5ec 6%, transparent);
+  --muted-foreground: #7a6e5e;
+  --accent: color-mix(in srgb, #ccba9d 12%, transparent);
+  --accent-foreground: #faf5ec;
+  --border: #3a2e2e;
+  --input: color-mix(in srgb, #faf5ec 10%, transparent);
+  --ring: #ffde59;
+}
