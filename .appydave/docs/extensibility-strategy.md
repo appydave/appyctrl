@@ -20,13 +20,13 @@ predictable and fast to resolve.
 These are the only upstream files that need modification to wire in AppyDave extensions.
 Each change should be a single import + single composition line — nothing more.
 
-| File | Why touched | Change shape |
-|------|-------------|--------------|
-| `apps/web/src/main.tsx` | Import AppyDave CSS token overrides | 1 import line |
-| `apps/web/src/router.ts` | Wrap component to inject AppyDave providers/shell | 3–5 lines |
-| `apps/server/src/ws.ts` | Compose `AppyWsRpcGroup` with upstream `WsRpcGroup` | 2 lines |
-| `apps/server/src/bootstrap.ts` | Compose `AppyLayer` alongside upstream layers | 2 lines |
-| `apps/desktop/src/main.ts` | Expose AppyDave bridge methods via preload | 10–20 lines |
+| File                           | Why touched                                         | Change shape  |
+| ------------------------------ | --------------------------------------------------- | ------------- |
+| `apps/web/src/main.tsx`        | Import AppyDave CSS token overrides                 | 1 import line |
+| `apps/web/src/router.ts`       | Wrap component to inject AppyDave providers/shell   | 3–5 lines     |
+| `apps/server/src/ws.ts`        | Compose `AppyWsRpcGroup` with upstream `WsRpcGroup` | 2 lines       |
+| `apps/server/src/bootstrap.ts` | Compose `AppyLayer` alongside upstream layers       | 2 lines       |
+| `apps/desktop/src/main.ts`     | Expose AppyDave bridge methods via preload          | 10–20 lines   |
 
 When a rebase conflict hits one of these files, the resolution is always the same shape:
 keep the upstream change, re-apply your one composition line.
@@ -71,11 +71,15 @@ layout shell here — AppyDave sidebar panel, theme provider, app registry conte
 ```ts
 // router.ts (seam edit)
 Wrap: ({ children }) =>
-  createElement(QueryClientProvider, { client: queryClient },
-    createElement(AppAtomRegistryProvider, undefined,
-      createElement(AppyShell, undefined, children)  // ← your one addition
-    )
-  )
+  createElement(
+    QueryClientProvider,
+    { client: queryClient },
+    createElement(
+      AppAtomRegistryProvider,
+      undefined,
+      createElement(AppyShell, undefined, children), // ← your one addition
+    ),
+  );
 ```
 
 `AppyShell` lives in `apps/web/src/appydave/shell/` and can be as complex as needed.
@@ -94,12 +98,13 @@ export const AppyWsRpcGroup = RpcGroup.make(
   AppyUpgradeFromUpstreamRpc,
   AppyAppRegistryListRpc,
   // ...
-)
+);
 ```
 
 In `ws.ts` (seam edit):
+
 ```ts
-const AppyGroup = RpcGroup.union(WsRpcGroup, AppyWsRpcGroup)
+const AppyGroup = RpcGroup.union(WsRpcGroup, AppyWsRpcGroup);
 // then use AppyGroup where WsRpcGroup was used
 ```
 
@@ -109,10 +114,7 @@ Your server services are a separate Effect Layer:
 
 ```ts
 // apps/server/src/appydave/AppyLayer.ts
-export const AppyLayer = Layer.mergeAll(
-  UpgradeService.Default,
-  AppRegistryService.Default,
-)
+export const AppyLayer = Layer.mergeAll(UpgradeService.Default, AppRegistryService.Default);
 ```
 
 In `bootstrap.ts` (seam edit): compose `AppyLayer` with the upstream layer graph.
@@ -174,6 +176,7 @@ but it must be documented:
 This makes the divergence visible during rebase conflicts and auditable over time.
 
 The patch annotation convention:
+
 ```
 // [APPYDAVE-PATCH id="<id>" type="bug-fix|feature|seam"]
 // Root cause: <why the upstream code fails>
@@ -201,20 +204,23 @@ logic into an `appydave/` file and import it.
 ## What this looks like in practice
 
 ### Adding a new server feature
+
 1. Create `apps/server/src/appydave/<feature>/`
 2. Add service to `AppyLayer.ts`
 3. Add RPC contract to `packages/appydave/src/rpc.ts`
-4. *(no seam edits if AppyLayer and AppyRpcGroup are already wired)*
+4. _(no seam edits if AppyLayer and AppyRpcGroup are already wired)_
 
 ### Adding a new UI feature
+
 1. Create `apps/web/src/appydave/<feature>/`
 2. Expose it through `AppyShell` or as a new route file
-3. *(no seam edits if AppyShell is already wired)*
+3. _(no seam edits if AppyShell is already wired)_
 
 ### Adding a new desktop capability
+
 1. Define it in `packages/appydave/src/bridge.ts`
 2. Implement in `apps/desktop/src/appydave/appyBridge.ts`
-3. *(minimal seam edit in `main.ts` only if adding a new IPC channel)*
+3. _(minimal seam edit in `main.ts` only if adding a new IPC channel)_
 
 ---
 

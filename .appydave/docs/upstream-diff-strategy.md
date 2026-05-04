@@ -7,6 +7,7 @@ How to track, audit, and manage divergences from upstream t3code deterministical
 ## The problem at scale
 
 With hundreds of upstream commits over time, two questions become hard to answer manually:
+
 1. Which files in our fork differ from upstream, and why?
 2. Are all divergences accounted for, or did something slip in undocumented?
 
@@ -38,6 +39,7 @@ Runs `git diff upstream/main HEAD` filtered to non-AppyDave files, then cross-re
 against `manifest.md`.
 
 Output:
+
 ```
 ✓ accounted   apps/web/src/environments/primary/auth.ts         [fetch-timeout]
 ✓ accounted   apps/web/src/environments/primary/context.ts      [fetch-timeout]
@@ -62,6 +64,7 @@ and `.appydave/`. Shows the raw divergence for manual review or before a rebase.
 ### `check-seams.sh`
 
 Runs `git diff upstream/main HEAD` scoped to the five seam files only:
+
 - `apps/web/src/main.tsx`
 - `apps/web/src/router.ts`
 - `apps/server/src/ws.ts`
@@ -75,6 +78,7 @@ Useful immediately after `git fetch upstream` to know if a rebase will hit seam 
 ## Upgrade flow integration
 
 When the Upgrade button (conversational Claude session) is built, it should:
+
 1. Run `audit-patches.sh` before rebasing — confirm all divergences are accounted for
 2. Run `check-seams.sh` — flag seam conflicts for manual review
 3. After rebase, run `audit-patches.sh` again — any new unaccounted diffs mean the
@@ -87,6 +91,7 @@ When the Upgrade button (conversational Claude session) is built, it should:
 ## Removal lifecycle
 
 When upstream ships a fix that supersedes one of our patches:
+
 1. Remove the `[APPYDAVE-PATCH]` annotation from the source file
 2. Move the manifest entry from `## Active patches` to `## Removed patches` with a
    removal date and note of what upstream change made it obsolete

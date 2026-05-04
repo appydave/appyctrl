@@ -4,6 +4,7 @@ All deliberate divergences from upstream t3code. Every entry here corresponds to
 `[APPYDAVE-PATCH]` annotation in the source file.
 
 Types:
+
 - **bug-fix** — fixes a genuine upstream bug; remove when upstream ships its own fix
 - **feature** — AppyDave-owned functionality; keep indefinitely
 - **seam** — minimal wiring line in a seam file; re-apply after any rebase conflict
@@ -14,11 +15,11 @@ Types:
 
 ### fetch-timeout `bug-fix`
 
-| | |
-|---|---|
-| **Files** | `apps/web/src/environments/primary/auth.ts`, `apps/web/src/environments/primary/context.ts` |
-| **Added** | 2026-05-03 |
-| **Upstream status** | No fix expected — deliberate dev-mode design |
+|                     |                                                                                             |
+| ------------------- | ------------------------------------------------------------------------------------------- |
+| **Files**           | `apps/web/src/environments/primary/auth.ts`, `apps/web/src/environments/primary/context.ts` |
+| **Added**           | 2026-05-03                                                                                  |
+| **Upstream status** | No fix expected — deliberate dev-mode design                                                |
 
 **Root cause:** `apps/desktop/src/main.ts:2084` deliberately creates the Electron window
 before the backend is ready in dev mode. `waitForBackendWindowReady` result is `void`'d
@@ -42,10 +43,10 @@ opens after auth routes are ready.
 
 ### splash-pending `bug-fix`
 
-| | |
-|---|---|
-| **Files** | `apps/web/src/routes/__root.tsx` |
-| **Added** | 2026-05-03 |
+|                     |                                        |
+| ------------------- | -------------------------------------- |
+| **Files**           | `apps/web/src/routes/__root.tsx`       |
+| **Added**           | 2026-05-03                             |
 | **Upstream status** | Missing feature in upstream, not filed |
 
 **Root cause:** TanStack Router renders nothing during `beforeLoad` unless a

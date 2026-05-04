@@ -33,10 +33,10 @@ for desktop mode because Electron manages its own window lifecycle.
 
 See `.appydave/patches/manifest.md` for full detail.
 
-| Patch | What it does |
-|-------|-------------|
-| `fetch-timeout` | Wraps auth fetch calls with 8s AbortController so they fail fast and retry |
-| `splash-pending` | Shows the T3 splash logo during `beforeLoad` instead of a black screen |
+| Patch            | What it does                                                               |
+| ---------------- | -------------------------------------------------------------------------- |
+| `fetch-timeout`  | Wraps auth fetch calls with 8s AbortController so they fail fast and retry |
+| `splash-pending` | Shows the T3 splash logo during `beforeLoad` instead of a black screen     |
 
 ## What a proper upstream fix would look like
 

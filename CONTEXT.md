@@ -51,6 +51,7 @@ AppyCtrl is David Cruwys's daily-rebasing fork of [t3code](https://github.com/pi
 ## Key Workflows
 
 ### Daily Upstream Sync (Rebase)
+
 1. `git fetch upstream` — pulls latest commits from `pingdotgg/t3code`
 2. Check seam files: `git diff upstream/main HEAD -- apps/web/src/main.tsx apps/web/src/router.ts apps/server/src/ws.ts apps/desktop/src/main.ts` — confirm AppyDave's seam edits are the only diffs
 3. `git rebase upstream/main` — replays AppyDave commits on top of fresh upstream history
@@ -58,6 +59,7 @@ AppyCtrl is David Cruwys's daily-rebasing fork of [t3code](https://github.com/pi
 5. `git push --force-with-lease origin main` — force-push the rebased branch; `--force-with-lease` guards against overwriting a concurrent push
 
 ### Adding an AppyDave Feature
+
 1. Identify which seam the feature composes through (UI component → `router.ts`; new RPC method → `ws.ts`; new server service → `bootstrap.ts`; desktop IPC → `main.ts`)
 2. Create a new file inside the appropriate `appydave/` subdir (e.g., `apps/web/src/appydave/sidebar/AppLauncherSection.tsx`)
 3. Add exactly one import and one composition line to the seam file — nothing more
@@ -65,6 +67,7 @@ AppyCtrl is David Cruwys's daily-rebasing fork of [t3code](https://github.com/pi
 5. Commit with prefix `feat(appydave):` so AppyDave commits are identifiable in `git log upstream/main..HEAD`
 
 ### Running the App in Development
+
 1. `bun install` — installs all workspace dependencies (Bun workspaces, Turbo)
 2. `bun run dev` — starts web (Vite on port 5173) and server (WebSocket on port 3773) concurrently via `scripts/dev-runner.ts`
 3. Browser opens to `localhost:5173`; server connects to Codex app-server child process on first session
@@ -72,6 +75,7 @@ AppyCtrl is David Cruwys's daily-rebasing fork of [t3code](https://github.com/pi
 5. Before committing: `bun fmt && bun lint && bun run typecheck && bun run test` must all pass
 
 ### Applying AppyDave Branding (Phase 1–2)
+
 1. Update `apps/desktop/src/appBranding.ts` — change `APP_BASE_NAME` from `"T3 Code"` to `"AppyDave"` (one constant, the only permitted direct upstream-file edit here)
 2. Create `apps/web/src/appydave/brand.css` — CSS custom property overrides using warm dark tokens (`#1a1515` chrome, `#ccba9d` gold, `#ffde59` yellow)
 3. Add one import line to `apps/web/src/main.tsx`: `import "./appydave/brand.css";` — this is the seam edit
@@ -80,24 +84,24 @@ AppyCtrl is David Cruwys's daily-rebasing fork of [t3code](https://github.com/pi
 ## Design Decisions
 
 - **Rebase strategy, not merge**: Keeping AppyDave commits always on top of upstream via daily rebase produces a linear history where `git log upstream/main..HEAD` shows exactly AppyDave's additions. A merge strategy would interleave commits and make it harder to audit what's custom vs upstream. The tradeoff is force-push is required, which is acceptable on a single-owner repo.
-  - *Alternative considered*: Merge commits from upstream
-  - *Why rejected*: Merge history obscures which code is AppyDave's; conflict resolution is harder to review; force-push avoidance does not justify the overhead at this scale
+  - _Alternative considered_: Merge commits from upstream
+  - _Why rejected_: Merge history obscures which code is AppyDave's; conflict resolution is harder to review; force-push avoidance does not justify the overhead at this scale
 
 - **Seam file discipline (one import + one composition)**: Restricting upstream file edits to the minimum possible makes rebasing nearly conflict-free. If upstream restructures a seam file, AppyDave's one-line addition is trivial to re-apply. Any logic in upstream files beyond a seam line would collide with upstream evolution.
-  - *Alternative considered*: Fork and patch individual upstream files as needed
-  - *Why rejected*: Patch-style forks accumulate drift; a rebase after major upstream refactors becomes days of conflict resolution rather than minutes
+  - _Alternative considered_: Fork and patch individual upstream files as needed
+  - _Why rejected_: Patch-style forks accumulate drift; a rebase after major upstream refactors becomes days of conflict resolution rather than minutes
 
 - **CSS variable override approach**: Branding is applied by overriding `:root` CSS custom properties in a single `brand.css` file imported at the entry point, never by editing upstream's `index.css`. This means upstream can add or rename tokens freely; AppyDave's overrides are a thin diff on top.
-  - *Alternative considered*: Copy and edit `index.css` entirely
-  - *Why rejected*: Forked CSS diverges on every upstream token change; the seam discipline would be violated
+  - _Alternative considered_: Copy and edit `index.css` entirely
+  - _Why rejected_: Forked CSS diverges on every upstream token change; the seam discipline would be violated
 
 - **Effect-TS for server composition**: Upstream chose Effect as its dependency injection and async model. AppyDave's server extensions (`AppyLayer`, `AppyWsRpcGroup`) use the same model, making them composable with upstream layers at the seam points. Switching to a different DI approach for AppyDave code would create impedance mismatch at every seam.
-  - *Alternative considered*: Plain Node.js services injected via constructor
-  - *Why rejected*: Incompatible with upstream layer graph composition; cannot use `Layer.mergeAll` across paradigms
+  - _Alternative considered_: Plain Node.js services injected via constructor
+  - _Why rejected_: Incompatible with upstream layer graph composition; cannot use `Layer.mergeAll` across paradigms
 
 - **Single `main` branch, no long-lived feature branches**: All AppyDave work lands on `main` to minimize rebase friction. A feature branch rebasing against upstream simultaneously with `main` creates double rebase work. This enforces small, shippable increments.
-  - *Alternative considered*: Feature branches merged back to main before rebase
-  - *Why rejected*: Branch merges add merge commits that complicate the upstream rebase history
+  - _Alternative considered_: Feature branches merged back to main before rebase
+  - _Why rejected_: Branch merges add merge commits that complicate the upstream rebase history
 
 ## Non-obvious Constraints
 

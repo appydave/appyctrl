@@ -92,9 +92,12 @@ function getDesktopBootstrapCredential(): string | null {
 
 export async function fetchSessionState(): Promise<AuthSessionState> {
   return retryTransientBootstrap(async () => {
-    const response = await fetchWithBootstrapTimeout(resolvePrimaryEnvironmentHttpUrl("/api/auth/session"), {
-      credentials: "include",
-    });
+    const response = await fetchWithBootstrapTimeout(
+      resolvePrimaryEnvironmentHttpUrl("/api/auth/session"),
+      {
+        credentials: "include",
+      },
+    );
     if (!response.ok) {
       throw new BootstrapHttpError({
         message: `Failed to load server auth session state (${response.status}).`,
@@ -147,14 +150,17 @@ function toFriendlyBootstrapErrorMessage(status: number, message: string): strin
 async function exchangeBootstrapCredential(credential: string): Promise<AuthBootstrapResult> {
   return retryTransientBootstrap(async () => {
     const payload: AuthBootstrapInput = { credential };
-    const response = await fetchWithBootstrapTimeout(resolvePrimaryEnvironmentHttpUrl("/api/auth/bootstrap"), {
-      body: JSON.stringify(payload),
-      credentials: "include",
-      headers: {
-        "content-type": "application/json",
+    const response = await fetchWithBootstrapTimeout(
+      resolvePrimaryEnvironmentHttpUrl("/api/auth/bootstrap"),
+      {
+        body: JSON.stringify(payload),
+        credentials: "include",
+        headers: {
+          "content-type": "application/json",
+        },
+        method: "POST",
       },
-      method: "POST",
-    });
+    );
 
     if (!response.ok) {
       const message = toFriendlyBootstrapErrorMessage(response.status, await response.text());
@@ -197,15 +203,10 @@ const BOOTSTRAP_RETRY_STEP_MS = 500;
 // Remove when: upstream wraps fetch calls with AbortController natively.
 const BOOTSTRAP_REQUEST_TIMEOUT_MS = 8_000;
 
-export function fetchWithBootstrapTimeout(
-  input: string,
-  init?: RequestInit,
-): Promise<Response> {
+export function fetchWithBootstrapTimeout(input: string, init?: RequestInit): Promise<Response> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), BOOTSTRAP_REQUEST_TIMEOUT_MS);
-  return fetch(input, { ...init, signal: controller.signal }).finally(() =>
-    clearTimeout(timer),
-  );
+  return fetch(input, { ...init, signal: controller.signal }).finally(() => clearTimeout(timer));
 }
 
 export async function retryTransientBootstrap<T>(operation: () => Promise<T>): Promise<T> {

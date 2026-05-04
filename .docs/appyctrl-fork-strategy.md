@@ -31,6 +31,7 @@ git push --force-with-lease origin main
 ```
 
 **Why rebase over merge:**
+
 - Your commits always sit visibly on top. `git log` reads cleanly: upstream history, then
   AppyDave delta.
 - `git diff upstream/main HEAD` always shows exactly what you've changed — useful when
@@ -64,12 +65,12 @@ using T3 Code's built-in Claude Code integration to handle conflicts.
 
 These are the files most likely to conflict as upstream evolves:
 
-| Area | Files | AppyDave intent |
-|------|-------|-----------------|
-| Branding | `apps/web/src/` styles, layout shell | AppyDave design system |
-| Left nav / app switcher | new component (TBD) | Chrome window / app registry |
-| Settings panel | upstream adds features here | Upgrade button lives here |
-| `packages/contracts/` | upstream adds RPC methods | extend, don't replace |
+| Area                    | Files                                | AppyDave intent              |
+| ----------------------- | ------------------------------------ | ---------------------------- |
+| Branding                | `apps/web/src/` styles, layout shell | AppyDave design system       |
+| Left nav / app switcher | new component (TBD)                  | Chrome window / app registry |
+| Settings panel          | upstream adds features here          | Upgrade button lives here    |
+| `packages/contracts/`   | upstream adds RPC methods            | extend, don't replace        |
 
 ---
 
@@ -82,6 +83,7 @@ Source of truth: AppyDave design system (accessible via the `brand-dave:brand` s
 `/appydave-brand/design-system/`).
 
 Scope:
+
 - CSS variables / Tailwind theme tokens
 - App title / window title
 - Favicon and any splash assets
@@ -101,6 +103,7 @@ A persistent left sidebar (or collapsible panel) that lists registered applicati
 opens each in a separate Chrome window (or browser tab, or Electron window).
 
 Concepts:
+
 - **App registry** — a persistent list of AppyDave apps (name, URL/path, icon). Stored in
   server settings or a local JSON file.
 - **Window launcher** — clicking an app entry opens it (new Electron window or external

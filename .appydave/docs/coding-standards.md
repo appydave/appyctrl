@@ -13,6 +13,7 @@ Code that matches upstream patterns rebases cleanly and breaks less when upstrea
 
 Design-plan entries are the spec. Before touching code for any feature, expand the relevant
 section in `.appydave/docs/design-plan.md` until it answers:
+
 - What files get created
 - Which pattern each file uses (Effect layer / Rpc.make / CSS override / bridge call)
 - Edge cases and failure modes
@@ -24,20 +25,21 @@ app registry) must be fully specced before coding starts.
 
 ## Patterns (follow upstream exactly)
 
-| What | Pattern | Reference |
-|------|---------|-----------|
-| New server service | Effect Layer | `apps/server/src/*/Services/` |
-| New RPC method | `Rpc.make()` + `RpcGroup` | `packages/contracts/src/rpc.ts` |
-| Shared types | Effect Schema (not raw TS interfaces) | `packages/contracts/src/` |
-| Desktop ↔ web data | Typed bridge interface | `packages/contracts/src/ipc.ts` |
-| IPC calls | Via `AppyBridge` interface — never raw `ipcRenderer` | `packages/appydave/src/bridge.ts` |
-| CSS theming | Custom property overrides | `apps/web/src/appydave/brand.css` |
+| What               | Pattern                                              | Reference                         |
+| ------------------ | ---------------------------------------------------- | --------------------------------- |
+| New server service | Effect Layer                                         | `apps/server/src/*/Services/`     |
+| New RPC method     | `Rpc.make()` + `RpcGroup`                            | `packages/contracts/src/rpc.ts`   |
+| Shared types       | Effect Schema (not raw TS interfaces)                | `packages/contracts/src/`         |
+| Desktop ↔ web data | Typed bridge interface                               | `packages/contracts/src/ipc.ts`   |
+| IPC calls          | Via `AppyBridge` interface — never raw `ipcRenderer` | `packages/appydave/src/bridge.ts` |
+| CSS theming        | Custom property overrides                            | `apps/web/src/appydave/brand.css` |
 
 ---
 
 ## Tests
 
 Match upstream's discipline:
+
 - **Test** service logic, pure functions, schema validation
 - **Skip** obvious React UI components unless they contain real logic
 - **Run** with `bun run test` (never `bun test` — see AGENTS.md)

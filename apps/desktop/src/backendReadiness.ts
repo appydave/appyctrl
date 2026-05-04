@@ -60,7 +60,8 @@ export async function waitForHttpReady(
   const intervalMs = options?.intervalMs ?? DEFAULT_INTERVAL_MS;
   const requestTimeoutMs = options?.requestTimeoutMs ?? DEFAULT_REQUEST_TIMEOUT_MS;
   const readinessPath = options?.path ?? "/";
-  const isReady = options?.isReady ?? ((response: Response) => response.ok || response.status === 302);
+  const isReady =
+    options?.isReady ?? ((response: Response) => response.ok || response.status === 302);
   const deadline = Date.now() + timeoutMs;
 
   for (;;) {

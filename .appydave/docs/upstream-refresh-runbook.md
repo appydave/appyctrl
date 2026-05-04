@@ -49,12 +49,14 @@ its own advisory lint hints that will always appear.
 ### 4. Log shape after rebase
 
 After a clean rebase, `git log --oneline` shows:
+
 ```
 <hash>  chore(appydave): our latest commit     ← AppyDave commits on top
 <hash>  fix(dev): our earlier commit
 <hash>  feat(scm): Gitlab (#2462)               ← upstream commits below
 ...
 ```
+
 This is correct. Our commits always float on top. If an AppyDave commit appears below
 an upstream commit, something went wrong.
 
