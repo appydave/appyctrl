@@ -18,7 +18,18 @@ grep -q '"name": "t3code"' ~/dev/upstream/repos.jsonl && echo "registered" || ec
 If missing, append this line to `repos.jsonl`:
 
 ```json
-{"name": "t3code", "remote": "https://github.com/pingdotgg/t3code.git", "local": "~/dev/upstream/repos/t3code", "language": "typescript", "brain": ["appyctrl"], "status": "active", "purpose": "upstream", "description": "T3 Code — upstream source for appyctrl fork. Electron + React coding assistant (pingdotgg).", "tags": ["t3code", "electron", "typescript", "upstream", "appyctrl"], "last_pulled": "2026-05-03"}
+{
+  "name": "t3code",
+  "remote": "https://github.com/pingdotgg/t3code.git",
+  "local": "~/dev/upstream/repos/t3code",
+  "language": "typescript",
+  "brain": ["appyctrl"],
+  "status": "active",
+  "purpose": "upstream",
+  "description": "T3 Code — upstream source for appyctrl fork. Electron + React coding assistant (pingdotgg).",
+  "tags": ["t3code", "electron", "typescript", "upstream", "appyctrl"],
+  "last_pulled": "2026-05-03"
+}
 ```
 
 Then clone if not present:
@@ -72,10 +83,10 @@ Read `.appydave/logs/gap-analysis.md` → Watch list section.
 
 For each watched feature, ask: did any incoming commit touch it?
 
-| Watch item | Signal to look for |
-|---|---|
-| Upgrade button | `git fetch`, rebase automation, "update" UI |
-| Apps launcher | sidebar changes, external URL handling, BrowserWindow |
+| Watch item         | Signal to look for                                    |
+| ------------------ | ----------------------------------------------------- |
+| Upgrade button     | `git fetch`, rebase automation, "update" UI           |
+| Apps launcher      | sidebar changes, external URL handling, BrowserWindow |
 | Branding injection | `ipc.ts`, `appBranding.ts`, `DesktopBridge` interface |
 
 If an overlap is found, add it to the **Active gaps** section of `gap-analysis.md`.

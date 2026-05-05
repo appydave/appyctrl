@@ -41,23 +41,24 @@ Superseded = Theo shipped it and we dropped ours. Abandoned = we decided not to 
 
 ### What we built
 
-| Feature                   | Status  | Files                                                        | Notes                                                                 |
-| ------------------------- | ------- | ------------------------------------------------------------ | --------------------------------------------------------------------- |
+| Feature                   | Status  | Files                                                        | Notes                                                                                                                    |
+| ------------------------- | ------- | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------ |
 | t3-upstream-refresh skill | shipped | `.claude/skills/t3-upstream-refresh/SKILL.md`                | Local skill (project-only). Full 8-step refresh cycle including snapshot, rebase, logging, gap check, patch verify, push |
-| t3code upstream snapshot  | shipped | `~/dev/upstream/repos.jsonl` + `~/dev/upstream/repos/t3code` | Registered + cloned — clean reference copy of upstream at all times  |
+| t3code upstream snapshot  | shipped | `~/dev/upstream/repos.jsonl` + `~/dev/upstream/repos/t3code` | Registered + cloned — clean reference copy of upstream at all times                                                      |
 
 ### Video angles noted (for future video planning)
 
 Three demo-worthy moments in the appyctrl story:
+
 1. **Upstream visibility** — `git fetch` surfaces Theo's in-progress branches before they ship. You can watch what's coming.
 2. **Branding that survives rebases** — swap visual identity without touching upstream files. Zero conflict on daily sync.
 3. **Dynamic app launcher** — personal command centre, your apps accessible from one place.
 
 ### Planned (not yet started)
 
-| Feature          | Status  | Notes                                                                    |
-| ---------------- | ------- | ------------------------------------------------------------------------ |
-| Design brief     | in-progress | Being done in a separate session — drives branding + color work      |
-| Branding + color | planned | Blocked on design brief. Wordmark, brand.css token overrides, favicon   |
-| Apps launcher    | planned | Left sidebar, app registry, Chromium window launcher                    |
-| Upgrade button   | planned | WS RPC + Claude Code agent flow for conversational upstream sync        |
+| Feature          | Status      | Notes                                                                 |
+| ---------------- | ----------- | --------------------------------------------------------------------- |
+| Design brief     | in-progress | Being done in a separate session — drives branding + color work       |
+| Branding + color | planned     | Blocked on design brief. Wordmark, brand.css token overrides, favicon |
+| Apps launcher    | planned     | Left sidebar, app registry, Chromium window launcher                  |
+| Upgrade button   | planned     | WS RPC + Claude Code agent flow for conversational upstream sync      |

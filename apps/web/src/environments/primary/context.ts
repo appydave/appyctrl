@@ -6,8 +6,7 @@ import {
 import type { EnvironmentId, ExecutionEnvironmentDescriptor } from "@t3tools/contracts";
 import { create } from "zustand";
 
-// [APPYDAVE-PATCH id="fetch-timeout" type="bug-fix"] — see auth.ts for full rationale
-import { BootstrapHttpError, fetchWithBootstrapTimeout, retryTransientBootstrap } from "./auth";
+import { BootstrapHttpError, retryTransientBootstrap } from "./auth";
 
 import { readPrimaryEnvironmentTarget, resolvePrimaryEnvironmentHttpUrl } from "./target";
 
@@ -49,7 +48,7 @@ function createPrimaryKnownEnvironment(input: {
 
 async function fetchPrimaryEnvironmentDescriptor(): Promise<ExecutionEnvironmentDescriptor> {
   return retryTransientBootstrap(async () => {
-    const response = await fetchWithBootstrapTimeout(
+    const response = await fetch(
       resolvePrimaryEnvironmentHttpUrl(SERVER_ENVIRONMENT_DESCRIPTOR_PATH),
     );
     if (!response.ok) {
