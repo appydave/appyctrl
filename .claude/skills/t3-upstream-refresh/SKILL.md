@@ -40,6 +40,17 @@ cd /Users/davidcruwys/dev/ad/apps/appyctrl
 git fetch upstream
 git log --oneline HEAD..upstream/main          # preview incoming commits
 git diff HEAD..upstream/main --name-only | grep -E "(auth|root|main|router|ws\.ts)"  # conflict risk
+```
+
+**Before rebasing — check for unstaged changes:**
+
+```bash
+git status --short
+```
+
+If unstaged changes exist, commit them — don't stash. They're real work and belong in history. Stage and commit with `chore(appydave): <session description>` before proceeding. The conflict risk grep flags seam files because our patches exist there, not necessarily because the incoming commit touches them — always run `git show upstream/main --name-only` to see what the actual new commit touches.
+
+```bash
 git rebase upstream/main
 bun install
 bun typecheck                                  # scan for 'error', not just exit code

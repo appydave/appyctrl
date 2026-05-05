@@ -49,3 +49,33 @@ use the new `vcs.*` layer, not the old `git.*` one.
 ### No action required
 
 None of these changes require AppyDave patches or modifications. Clean pass.
+
+---
+
+## 2026-05-04 — 1 commit (0ce7e56e..f7748a0d)
+
+### What shipped
+
+| Feature | Commits | What it does |
+| --- | --- | --- |
+| Hide whitespace in diffs | #2389 | Toggle in diff panel to hide whitespace-only changes — affects `DiffPanel.tsx`, `CheckpointDiffQuery`, `SettingsPanels` |
+
+### Overlap with AppyDave work
+
+| AppyDave feature | Overlap? | Notes |
+| --- | --- | --- |
+| Branding | None | — |
+| Apps launcher | None | — |
+| Upgrade button | None | — |
+
+### In-progress branches (visible via fetch)
+
+- `t3code/azure-devops-provider` — Azure DevOps SCM provider (new SCM family, watch if it touches sidebar)
+- `cursor/react-performance-scan` — React perf work (could touch component structure)
+- `cursor/t3-review-diff-rendering` — diff rendering follow-on to #2389
+- `t3code/remote-git-projects` — remote git project support
+- `t3code/mobile-remote-connect` — mobile remote connection
+
+### No action required
+
+Clean pass. Patches survived. 10/10 typecheck.
