@@ -32,7 +32,7 @@ grep -rn "classList.add.*dark\|classList.toggle.*dark" apps/web/src/
 grep -rn "useTheme\|ThemeProvider" apps/web/src/
 ```
 
-Either of those run *before* writing my own theme system would have surfaced `apps/web/src/hooks/useTheme.ts` — a complete, tested, hook-based implementation with `t3code:theme` storage, system-preference following, and cross-tab sync. Skipping that step cost ~2 hours of build + 1 hour of unwind.
+Either of those run _before_ writing my own theme system would have surfaced `apps/web/src/hooks/useTheme.ts` — a complete, tested, hook-based implementation with `t3code:theme` storage, system-preference following, and cross-tab sync. Skipping that step cost ~2 hours of build + 1 hour of unwind.
 
 ## Root cause
 
@@ -53,7 +53,7 @@ Before building any "cross-cutting capability that touches global state" (themin
 1. Grep upstream for the obvious global mutation (`classList.toggle`, `localStorage.setItem`, `dispatchEvent`, etc.)
 2. Grep for the obvious React shape (`use<Capability>`, `<CapabilityProvider>`)
 3. Grep for routes/pages that already host UI for the capability
-4. If anything turns up, your job is to *extend* it via tokens / additional UI elements / new entries in its registries — **not** to build a parallel system
+4. If anything turns up, your job is to _extend_ it via tokens / additional UI elements / new entries in its registries — **not** to build a parallel system
 
 The spec phrase "add a switcher" is ambiguous between "wire a new one" and "expose the existing one differently." Treat it as the latter until proven otherwise.
 

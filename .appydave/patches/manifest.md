@@ -74,6 +74,26 @@ arbitrary values that resolve to AppyDave colors per theme.
 sites are in self-contained blocks. Resolution shape: keep upstream's structural
 edits, re-apply the three colour-class swaps.
 
+### sidebar-apps-section `seam`
+
+|                     |                                                                  |
+| ------------------- | ---------------------------------------------------------------- |
+| **Files**           | `apps/web/src/components/Sidebar.tsx`                            |
+| **Added**           | 2026-05-05 (phase-2)                                             |
+| **Upstream status** | N/A — AppyDave-owned feature                                     |
+
+One import + one render line, mounted between the Projects `</SidebarGroup>` and the
+closing `</SidebarContent>` (line ~2710). The component lives at
+`apps/web/src/appydave/apps/AppyAppsSection.tsx` and owns the entire Applications
+section: header label, "+" add button, list of `<AppyAppRow>` items pulled from
+`useAppRegistry()`, and the `<AppyAppModal>` for add/edit/delete. Pre-seeded with
+two apps (Claude.ai + AngelEye) on first load.
+
+**Rebase risk:** low — the seam edit is a sibling component append at the bottom
+of the Projects section's container. Only conflicts if upstream restructures the
+SidebarContent flex chain. Resolution shape: keep upstream's restructure, re-add
+the `<AppyAppsSection />` line in equivalent position.
+
 ### sidebar-wordmark `seam`
 
 |                     |                                                                 |

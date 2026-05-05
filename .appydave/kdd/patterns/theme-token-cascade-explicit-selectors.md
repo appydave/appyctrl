@@ -39,11 +39,11 @@ Define the override CSS in its own file (`appydave/themes/themes.css`). Use **ex
 }
 ```
 
-Import it in `main.tsx` *after* the upstream `index.css`:
+Import it in `main.tsx` _after_ the upstream `index.css`:
 
 ```ts
 import "./index.css";
-import "./appydave/themes/themes.css";  // loads after — wins ties
+import "./appydave/themes/themes.css"; // loads after — wins ties
 ```
 
 ## Why this works
@@ -54,8 +54,12 @@ Our explicit `:root.dark` selector has identical `(0,1,1)` specificity. Same spe
 
 ```css
 /* Compiled output, both files: */
-:root.dark { --background: <upstream-dark-bg>; }   /* from index.css — loaded first */
-:root.dark { --background: #1a1515; }              /* from themes.css — loaded after, wins */
+:root.dark {
+  --background: <upstream-dark-bg>;
+} /* from index.css — loaded first */
+:root.dark {
+  --background: #1a1515;
+} /* from themes.css — loaded after, wins */
 ```
 
 ## Counter-example (what NOT to do)
@@ -66,7 +70,7 @@ Our explicit `:root.dark` selector has identical `(0,1,1)` specificity. Same spe
   --background: #ebe2ce;
 
   @variant dark {
-    --background: #1a1515;   /* never reaches the browser */
+    --background: #1a1515; /* never reaches the browser */
   }
 }
 ```

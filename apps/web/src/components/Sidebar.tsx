@@ -20,6 +20,8 @@ import {
 import { ProjectFavicon } from "./ProjectFavicon";
 // [APPYDAVE-PATCH id="sidebar-wordmark" type="seam"] AppyCtrl wordmark replaces upstream T3Wordmark
 import { AppyCtrlWordmark } from "../appydave/AppyCtrlWordmark";
+// [APPYDAVE-PATCH id="sidebar-apps-section" type="seam"] Applications section between Projects and Settings footer
+import { AppyAppsSection } from "../appydave/apps/AppyAppsSection";
 import { autoAnimate } from "@formkit/auto-animate";
 import React, { useCallback, useEffect, memo, useMemo, useRef, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
@@ -2706,6 +2708,8 @@ const SidebarProjectsContent = memo(function SidebarProjectsContent(
           </div>
         )}
       </SidebarGroup>
+      {/* [APPYDAVE-PATCH id="sidebar-apps-section" type="seam"] */}
+      <AppyAppsSection />
     </SidebarContent>
   );
 });
