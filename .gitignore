@@ -23,3 +23,13 @@ __screenshots__/
 .tanstack
 squashfs-root/
 .vercel
+
+# AppyDave: design-poc uploads (40MB of pasted source images, not needed for implementation)
+.appydave/design-poc/appyctrl/project/uploads/
+
+# AppyDave: SQLite WAL files from Ruflo memory init
+.swarm/*.db-shm
+.swarm/*.db-wal
+
+# AppyDave: ruflo hooks leak .claude-flow/ into subdirs they touch — only commit the project root one
+.appydave/design-poc/**/.claude-flow/
