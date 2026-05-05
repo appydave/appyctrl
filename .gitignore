@@ -33,3 +33,8 @@ squashfs-root/
 
 # AppyDave: ruflo hooks leak .claude-flow/ into subdirs they touch — only commit the project root one
 .appydave/design-poc/**/.claude-flow/
+
+# Ruflo hook leakage — .claude-flow/ resolves relative to pwd, not project root.
+# Subagents that cd into subdirs leave behind nested .claude-flow/ trees.
+**/.claude-flow/
+!/.claude-flow/
