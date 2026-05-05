@@ -8,17 +8,17 @@ Master taxonomy and entry point for all curated knowledge assets in this project
 
 ## Categories
 
-| Category | Purpose | Index |
-|---|---|---|
+| Category      | Purpose                                                                              | Index                                      |
+| ------------- | ------------------------------------------------------------------------------------ | ------------------------------------------ |
 | `foundation/` | Setup, configuration, and conceptual reference (the "what is this codebase" context) | [foundation/index.md](foundation/index.md) |
-| `patterns/` | Reusable architectural and code patterns proven across 2+ phases | [patterns/index.md](patterns/index.md) |
-| `operations/` | Troubleshooting guides and runbooks for ops-time problems | [operations/index.md](operations/index.md) |
-| `frameworks/` | Framework-specific knowledge (TanStack, Effect, Electron, shadcn) | [frameworks/index.md](frameworks/index.md) |
-| `learnings/` | Hard-won lessons captured in-the-moment from real bugs and gotchas | [learnings/index.md](learnings/index.md) |
-| `examples/` | Working code extracted from successful phases — copy-paste-ready | [examples/index.md](examples/index.md) |
-| `decisions/` | Architecture Decision Records (ADRs) with rationale and removal conditions | [decisions/index.md](decisions/index.md) |
-| `meta/` | KDD methodology, Lisa changelog, taxonomy notes | [meta/index.md](meta/index.md) |
-| `templates/` | Frontmatter templates for the four document types | [templates/](templates/) |
+| `patterns/`   | Reusable architectural and code patterns proven across 2+ phases                     | [patterns/index.md](patterns/index.md)     |
+| `operations/` | Troubleshooting guides and runbooks for ops-time problems                            | [operations/index.md](operations/index.md) |
+| `frameworks/` | Framework-specific knowledge (TanStack, Effect, Electron, shadcn)                    | [frameworks/index.md](frameworks/index.md) |
+| `learnings/`  | Hard-won lessons captured in-the-moment from real bugs and gotchas                   | [learnings/index.md](learnings/index.md)   |
+| `examples/`   | Working code extracted from successful phases — copy-paste-ready                     | [examples/index.md](examples/index.md)     |
+| `decisions/`  | Architecture Decision Records (ADRs) with rationale and removal conditions           | [decisions/index.md](decisions/index.md)   |
+| `meta/`       | KDD methodology, Lisa changelog, taxonomy notes                                      | [meta/index.md](meta/index.md)             |
+| `templates/`  | Frontmatter templates for the four document types                                    | [templates/](templates/)                   |
 
 ## Journey-based discovery
 

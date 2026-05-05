@@ -32,6 +32,6 @@ Append-only log of capability changes to Lisa for this project. Format follows t
 
 ### Lessons learned
 
-- Lisa's commands and principles port cleanly across workflows; only the *triggers* and *input shapes* differ between BMAD and phase-based projects.
+- Lisa's commands and principles port cleanly across workflows; only the _triggers_ and _input shapes_ differ between BMAD and phase-based projects.
 - Frontmatter convention is reusable verbatim with one renamed field (`kdd_story_origin` → `kdd_phase_origin`).
 - 100% link health standard is project-agnostic — keep it.

@@ -1,5 +1,5 @@
 /* Lucide-style icons for the AppyCtrl shell. 1.5–2px stroke, geometric. */
-const Icon = ({ d, size = 16, sw = 1.75, fill = 'none', children, style }) => (
+const Icon = ({ d, size = 16, sw = 1.75, fill = "none", children, style }) => (
   <svg
     width={size}
     height={size}
@@ -26,7 +26,13 @@ const IconChevronRight = (p) => <Icon d="M9 6l6 6-6 6" size={p.size || 14} {...p
 const IconChevronUp = (p) => <Icon d="M6 15l6-6 6 6" size={p.size || 14} {...p} />;
 const IconClose = (p) => <Icon d="M6 6l12 12M18 6L6 18" size={p.size || 14} {...p} />;
 const IconPlus = (p) => <Icon d="M12 5v14M5 12h14" size={p.size || 14} {...p} />;
-const IconFolder = (p) => <Icon d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" size={p.size || 14} {...p} />;
+const IconFolder = (p) => (
+  <Icon
+    d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
+    size={p.size || 14}
+    {...p}
+  />
+);
 const IconFolderPlus = (p) => (
   <Icon size={p.size || 14} {...p}>
     <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
@@ -45,7 +51,9 @@ const IconSettings = (p) => (
     <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
   </Icon>
 );
-const IconPlay = (p) => <Icon size={p.size || 14} fill="currentColor" stroke="none" d="M8 5v14l11-7z" {...p} />;
+const IconPlay = (p) => (
+  <Icon size={p.size || 14} fill="currentColor" stroke="none" d="M8 5v14l11-7z" {...p} />
+);
 const IconTerminal = (p) => (
   <Icon size={p.size || 14} {...p}>
     <path d="M4 17l6-6-6-6" />
@@ -80,8 +88,13 @@ const IconVSCode = (p) => (
   /* mono outline VS-Code-shaped mark (we keep it neutral/muted to avoid clashing with warm palette;
      the brief said keep VS Code's identity — but the icon ships in our chrome and we treat it tonally) */
   <svg width={p.size || 16} height={p.size || 16} viewBox="0 0 24 24" fill="none" style={p.style}>
-    <path d="M17 3l-9 7-3.5-3L3 8.5v7L4.5 17 8 14l9 7 4-2V5l-4-2z"
-      stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" fill="none" />
+    <path
+      d="M17 3l-9 7-3.5-3L3 8.5v7L4.5 17 8 14l9 7 4-2V5l-4-2z"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinejoin="round"
+      fill="none"
+    />
     <path d="M17 3v18" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
   </svg>
 );
@@ -114,11 +127,40 @@ const IconSmile = (p) => (
     <path d="M8.5 14.5c1 1.4 2.2 2 3.5 2s2.5-.6 3.5-2" />
   </Icon>
 );
-const IconBolt = (p) => <Icon size={p.size || 14} fill="currentColor" stroke="none" d="M13 2L4 14h7l-1 8 9-12h-7l1-8z" {...p} />;
+const IconBolt = (p) => (
+  <Icon
+    size={p.size || 14}
+    fill="currentColor"
+    stroke="none"
+    d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"
+    {...p}
+  />
+);
 
 Object.assign(window, {
-  Icon, IconSearch, IconChevronDown, IconChevronRight, IconChevronUp, IconClose,
-  IconPlus, IconFolder, IconFolderPlus, IconSort, IconSettings, IconPlay,
-  IconTerminal, IconDiff, IconCloud, IconCommit, IconGithub, IconVSCode,
-  IconFinder, IconArrowUp, IconArrowDown, IconBuild, IconLock, IconSmile, IconBolt,
+  Icon,
+  IconSearch,
+  IconChevronDown,
+  IconChevronRight,
+  IconChevronUp,
+  IconClose,
+  IconPlus,
+  IconFolder,
+  IconFolderPlus,
+  IconSort,
+  IconSettings,
+  IconPlay,
+  IconTerminal,
+  IconDiff,
+  IconCloud,
+  IconCommit,
+  IconGithub,
+  IconVSCode,
+  IconFinder,
+  IconArrowUp,
+  IconArrowDown,
+  IconBuild,
+  IconLock,
+  IconSmile,
+  IconBolt,
 });

@@ -13,12 +13,60 @@ Types:
 
 ## Active patches
 
+### theme-css-entry · theme-init `seam`
+
+|                     |                                                            |
+| ------------------- | ---------------------------------------------------------- |
+| **Files**           | `apps/web/src/main.tsx`                                    |
+| **Added**           | 2026-05-05 (phase-1)                                       |
+| **Upstream status** | N/A — these are AppyDave-owned wiring lines, not bug fixes |
+
+Two seam lines on `main.tsx`: (1) `import "./appydave/themes/themes.css"` overrides
+shadcn light + dark token palette with AppyDave warm cream / warm dark; (2) call
+`initializeTheme()` synchronously before `ReactDOM.createRoot` to apply `.dark` class
+from localStorage and eliminate FOUC. See `.appydave/specs/light-mode-spec.md`.
+
+**Rebase risk:** low — both lines sit at the bottom of the imports + just above the
+ReactDOM render. Conflicts only if upstream restructures startup order, in which
+case re-thread the two lines into the new sequence.
+
+### sidebar-wordmark `seam`
+
+|                     |                                                                 |
+| ------------------- | --------------------------------------------------------------- |
+| **Files**           | `apps/web/src/components/Sidebar.tsx`                           |
+| **Added**           | 2026-05-05 (phase-1, supersedes earlier AppyDave wordmark seam) |
+| **Upstream status** | N/A — AppyDave-owned brand                                      |
+
+`<AppyWordmark />` (AppyDave brand, removed) → `<AppyCtrlWordmark />` (AppyCtrl brand).
+Single import + single element swap. Earlier patch annotation updated to phase-1
+form.
+
+**Rebase risk:** low — only conflicts if upstream changes the surrounding `<Link>`
+structure. Resolution shape: keep upstream's structure, swap the wordmark element.
+
+### settings-appearance-nav `seam`
+
+|                     |                                                                 |
+| ------------------- | --------------------------------------------------------------- |
+| **Files**           | `apps/web/src/components/settings/SettingsSidebarNav.tsx`       |
+| **Added**           | 2026-05-05 (phase-1)                                            |
+| **Upstream status** | N/A — registers AppyDave settings panel into upstream nav array |
+
+Adds `"Appearance"` entry to `SETTINGS_NAV_ITEMS` and `"/settings/appearance"` to the
+`SettingsSectionPath` union type. Pairs with new route file
+`apps/web/src/routes/settings.appearance.tsx` (additive, never conflicts).
+
+**Rebase risk:** low — only conflicts if upstream adds/removes nav entries that touch
+the same array. Resolution shape: keep upstream's edits to other entries, re-add
+the Appearance entry in its position (immediately after General).
+
 ### bootstrap-cold-boot `bug-fix`
 
-|                     |                                                                                             |
-| ------------------- | ------------------------------------------------------------------------------------------- |
-| **Files**           | `apps/web/src/environments/primary/auth.ts`, `apps/web/src/environments/primary/context.ts` |
-| **Added**           | 2026-05-05                                                                                  |
+|                     |                                                                                                |
+| ------------------- | ---------------------------------------------------------------------------------------------- |
+| **Files**           | `apps/web/src/environments/primary/auth.ts`, `apps/web/src/environments/primary/context.ts`    |
+| **Added**           | 2026-05-05                                                                                     |
 | **Upstream status** | No fix expected — would require either bootstrap-cache hint or sequencing window-after-backend |
 
 **Read first:** `.appydave/docs/boot-sequence.md` — full debugging postmortem with UAT recipe.

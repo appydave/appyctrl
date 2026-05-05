@@ -4,6 +4,6 @@ Reusable architectural and code patterns proven across 2+ phases.
 
 ## Documents
 
-| Pattern | Description | Impact |
-|---|---|---|
+| Pattern                                         | Description                                                                          | Impact   |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------ | -------- |
 | [Seam Edit Discipline](seam-edit-discipline.md) | One import + one composition line per upstream file edit, audited via check-seams.sh | critical |

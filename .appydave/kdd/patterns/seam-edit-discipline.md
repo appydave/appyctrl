@@ -53,7 +53,7 @@ Plus a manifest entry in `.appydave/patches/manifest.md` keyed by the same id.
 
 // ❌ Wrong:
 if (someAppyCtrlCondition) {
-  return createElement(AppyShell, customProps, children);  // logic in seam
+  return createElement(AppyShell, customProps, children); // logic in seam
 } else {
   return children;
 }

@@ -1,0 +1,56 @@
+/* AppyDave themes — overrides shadcn semantic tokens with warm cream / warm dark palette.
+   Light = :root (default). Dark = activated by .dark class on <html> (Tailwind v4 dark variant).
+   Source palette: .appydave/design-poc/appyctrl/project/styles/{colors_and_type,appyctrl}.css
+*/
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Roboto+Mono&display=swap");
+
+/* ============================================================
+   LIGHT THEME — AppyDave warm cream
+   Three cream tones: canvas (mid) / sidebar (slightly darker) / card (lightest, warmer-than-canvas)
+   No pure white. Foreground = warm brown, not pure black.
+   ============================================================ */
+:root {
+  --background: #ebe2ce;
+  --app-chrome-background: #e2d8c0;
+  --foreground: #3a2a1f;
+  --card: #f5ebd9;
+  --card-foreground: #3a2a1f;
+  --popover: #f3ead4;
+  --popover-foreground: #3a2a1f;
+  --primary: #b8860b;
+  --primary-foreground: #faf5ec;
+  --secondary: color-mix(in srgb, #3a2a1f 6%, transparent);
+  --secondary-foreground: #3a2a1f;
+  --muted: color-mix(in srgb, #3a2a1f 4%, transparent);
+  --muted-foreground: color-mix(in srgb, #3a2a1f 62%, transparent);
+  --accent: color-mix(in srgb, #b8860b 18%, transparent);
+  --accent-foreground: #3a2a1f;
+  --border: color-mix(in srgb, #49352f 14%, transparent);
+  --input: color-mix(in srgb, #49352f 16%, transparent);
+  --ring: #b8860b;
+}
+
+/* ============================================================
+   DARK THEME — AppyDave warm dark
+   Activated when .dark class is on any ancestor (Tailwind v4 @custom-variant dark).
+   ============================================================ */
+@variant dark {
+  --background: #1a1515;
+  --app-chrome-background: #1a1515;
+  --foreground: #faf5ec;
+  --card: #25201e;
+  --card-foreground: #faf5ec;
+  --popover: #25201e;
+  --popover-foreground: #faf5ec;
+  --primary: #ffde59;
+  --primary-foreground: #342d2d;
+  --secondary: color-mix(in srgb, #ccba9d 12%, transparent);
+  --secondary-foreground: #faf5ec;
+  --muted: color-mix(in srgb, #faf5ec 6%, transparent);
+  --muted-foreground: #7a6e5e;
+  --accent: color-mix(in srgb, #ccba9d 12%, transparent);
+  --accent-foreground: #faf5ec;
+  --border: #3a2e2e;
+  --input: color-mix(in srgb, #faf5ec 10%, transparent);
+  --ring: #ffde59;
+}

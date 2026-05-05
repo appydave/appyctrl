@@ -27,21 +27,21 @@ This breaks the bootstrap flow because:
 
 UAT against a real Electron renderer (Playwright at `http://127.0.0.1:5733`):
 
-| `fetch()` call shape                          | Latency  |
-| --------------------------------------------- | -------- |
-| `fetch(url)` — no init                        | **~20s** |
-| `fetch(url, undefined)`                       | **~20s** |
-| `fetch(url, {})`                              | **~20s** |
-| `fetch(url, { method: "GET" })`               | **~20s** |
-| `fetch(url, { credentials: "include" })`      | ~4ms     |
-| `fetch(url, { cache: "no-store" })`           | ~4ms     |
-| `fetch(url, { cache: "default" })`            | ~3ms     |
-| `fetch(url, { keepalive: false })`            | ~4ms     |
-| Direct fetch to backend (port 13773)          | ~2ms     |
-| `curl` to Vite proxy (port 5733)              | ~1ms     |
+| `fetch()` call shape                     | Latency  |
+| ---------------------------------------- | -------- |
+| `fetch(url)` — no init                   | **~20s** |
+| `fetch(url, undefined)`                  | **~20s** |
+| `fetch(url, {})`                         | **~20s** |
+| `fetch(url, { method: "GET" })`          | **~20s** |
+| `fetch(url, { credentials: "include" })` | ~4ms     |
+| `fetch(url, { cache: "no-store" })`      | ~4ms     |
+| `fetch(url, { cache: "default" })`       | ~3ms     |
+| `fetch(url, { keepalive: false })`       | ~4ms     |
+| Direct fetch to backend (port 13773)     | ~2ms     |
+| `curl` to Vite proxy (port 5733)         | ~1ms     |
 
 The 20s only fires from a real browser, only through the Vite proxy, and only when fetch
-has no `cache` hint (or explicitly only `method` / no other options). Adding *any* of
+has no `cache` hint (or explicitly only `method` / no other options). Adding _any_ of
 `cache: *`, `keepalive: false`, or `credentials: "include"` switches Chromium to a code
 path that doesn't get stuck.
 
@@ -86,6 +86,7 @@ isTransientBootstrapError treats as transient:
 ```
 
 When backend isn't up:
+
 - **Vite proxy returns 502 fast** (~4ms, verified) — retry handles this.
 - **Vite proxy can ALSO hang** if the upstream connection establishes mid-boot — fetch
   never completes; retry blocks forever inside `await operation()`.
@@ -118,14 +119,14 @@ externally. The underlying fetch keeps running past the timeout (acceptable in d
 
 ## Failure modes seen and false leads (so you don't chase them)
 
-| Symptom                                                | Real cause                       | False lead chased                                   |
-| ------------------------------------------------------ | -------------------------------- | --------------------------------------------------- |
-| Black screen at startup                                | Router has no pendingComponent   | (not a false lead — `splash-pending` patch fixes it)|
-| `Bootstrap fetch timed out` error                      | Vite 20s stall + retry exhaust   | "AbortController doesn't propagate"; "retry budget too small alone" |
-| 200 OK in network tab, but route stays on splash       | Promise.race wins before fetch resolves on slow proxy | "React Strict Mode double-render"; "singleton being reset"; "dedup bug" |
-| CORS errors in playwright                              | Wrong origin (localhost vs 127.0.0.1)              | "Backend CORS misconfigured"                        |
-| Tests pass but app fails                               | Tests mock fetch — they never exercise Vite proxy  | "Patches solve a non-problem"                       |
-| Looks fine after manual reload                         | Backend warm; cold-boot race only on first load    | "Bug fixed"                                         |
+| Symptom                                          | Real cause                                            | False lead chased                                                       |
+| ------------------------------------------------ | ----------------------------------------------------- | ----------------------------------------------------------------------- |
+| Black screen at startup                          | Router has no pendingComponent                        | (not a false lead — `splash-pending` patch fixes it)                    |
+| `Bootstrap fetch timed out` error                | Vite 20s stall + retry exhaust                        | "AbortController doesn't propagate"; "retry budget too small alone"     |
+| 200 OK in network tab, but route stays on splash | Promise.race wins before fetch resolves on slow proxy | "React Strict Mode double-render"; "singleton being reset"; "dedup bug" |
+| CORS errors in playwright                        | Wrong origin (localhost vs 127.0.0.1)                 | "Backend CORS misconfigured"                                            |
+| Tests pass but app fails                         | Tests mock fetch — they never exercise Vite proxy     | "Patches solve a non-problem"                                           |
+| Looks fine after manual reload                   | Backend warm; cold-boot race only on first load       | "Bug fixed"                                                             |
 
 **Critical lesson: unit tests with mocked fetch CANNOT diagnose this. You MUST UAT in a
 real browser against the real Vite proxy with a backend cold-booting.** Use Playwright
@@ -193,6 +194,7 @@ the bootstrap fetch path. Check that `fetchWithBootstrapTimeout` is still called
   as the load-bearing change.
 
 If you find yourself in this file because the bootstrap is failing again, FIRST check:
+
 1. Is `fetchWithBootstrapTimeout` still wrapping the three call sites?
 2. Is `cache: "no-store"` still in the merged init?
 3. Did upstream change `BOOTSTRAP_RETRY_TIMEOUT_MS` or the bootstrap fetch path?
