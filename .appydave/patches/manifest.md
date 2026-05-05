@@ -29,6 +29,51 @@ key `t3code:theme`, toggles `.dark` class) — we just reskin via tokens.
 **Rebase risk:** low — single import line near the other CSS imports. Conflicts
 only if upstream reshuffles imports, in which case re-thread our line.
 
+### status-pill-colors `seam`
+
+|                     |                                                                      |
+| ------------------- | -------------------------------------------------------------------- |
+| **Files**           | `apps/web/src/components/Sidebar.logic.ts` (resolveThreadStatusPill) |
+| **Added**           | 2026-05-05 (phase-1 polish)                                          |
+| **Upstream status** | N/A — AppyDave-owned brand reskin                                    |
+
+`resolveThreadStatusPill()` returns Tailwind class strings for Working / Connecting /
+Pending Approval / Awaiting Input / Plan Ready / Completed pills. Upstream uses raw
+Tailwind palette literals (`text-sky-600 dark:text-sky-300/80`, etc.) which bypass
+shadcn tokens and produce cold T3 blue/violet/indigo even when our themes.css has
+overridden the rest of the palette. We swap each to a CSS variable arbitrary value
+(`text-[var(--ac-status-working)]`, `bg-[var(--ac-status-pending)]`, etc.) where the
+variables are defined in `apps/web/src/appydave/themes/themes.css` for both light
+and dark.
+
+Light palette: terracotta (working), brand-amber (pending/plan-ready), deep amber
+(awaiting), warm green (completed).
+Dark palette: brand-yellow (working), brand-amber (pending/plan-ready), brand-gold
+(awaiting), warm green (completed).
+
+**Rebase risk:** medium — the function body is one of the more active upstream
+files. Resolution shape on conflict: keep upstream's logic + state shape, re-apply
+the colorClass/dotClass swaps. The annotation is at the top of the function body
+to make it visible during conflict resolution.
+
+### plan-sidebar-colors `seam`
+
+|                     |                                           |
+| ------------------- | ----------------------------------------- |
+| **Files**           | `apps/web/src/components/PlanSidebar.tsx` |
+| **Added**           | 2026-05-05 (phase-1 polish)               |
+| **Upstream status** | N/A — AppyDave-owned brand reskin         |
+
+Three swaps in `PlanSidebar.tsx`: `stepStatusIcon()` (lines 35, 42 — completed +
+inProgress badges), the "PLAN" header `<Badge>` (line 143), and the per-step row
+background tints (lines 215–216). All move from raw Tailwind palette
+(`bg-emerald-500/15`, `bg-blue-500/15`, `text-blue-400`) to `--ac-status-*` token
+arbitrary values that resolve to AppyDave colors per theme.
+
+**Rebase risk:** low — PlanSidebar is comparatively stable, and the three change
+sites are in self-contained blocks. Resolution shape: keep upstream's structural
+edits, re-apply the three colour-class swaps.
+
 ### sidebar-wordmark `seam`
 
 |                     |                                                                 |

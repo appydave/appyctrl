@@ -40,6 +40,14 @@
   /* AppyDave wordmark colors — light theme */
   --appy-wordmark-appy: #3a2a1f;
   --appy-wordmark-ctrl: #b8860b;
+
+  /* Status indicators — light theme. Replaces hardcoded sky/amber/indigo/violet/emerald
+     in upstream Sidebar.logic.ts and PlanSidebar.tsx. */
+  --ac-status-working: #b8531a; /* terracotta — POC working pill on cream */
+  --ac-status-pending: #c8841a; /* brand-amber — your turn to approve */
+  --ac-status-awaiting: #b8860b; /* deep amber — input requested */
+  --ac-status-plan-ready: #c8841a; /* brand-amber — plan available */
+  --ac-status-completed: #4d7825; /* warm green — POC diff-add hue */
 }
 
 /* ============================================================
@@ -69,4 +77,11 @@
   /* AppyDave wordmark colors — dark theme (matches brand: gold + yellow split) */
   --appy-wordmark-appy: #ccba9d;
   --appy-wordmark-ctrl: #ffde59;
+
+  /* Status indicators — dark theme. */
+  --ac-status-working: #ffde59; /* brand-yellow — primary CTA on dark */
+  --ac-status-pending: #c8841a; /* brand-amber */
+  --ac-status-awaiting: #ccba9d; /* brand-gold */
+  --ac-status-plan-ready: #c8841a; /* brand-amber */
+  --ac-status-completed: #8fc66c; /* warm green — POC dark diff-add */
 }
