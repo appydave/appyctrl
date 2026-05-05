@@ -1,15 +1,19 @@
 /* AppyDave themes — overrides shadcn semantic tokens with warm cream / warm dark palette.
-   Light = :root (default). Dark = activated by .dark class on <html> (Tailwind v4 dark variant).
+   Light = :root (default). Dark = activated by .dark class on <html> via upstream useTheme hook.
    Source palette: .appydave/design-poc/appyctrl/project/styles/{colors_and_type,appyctrl}.css
+
+   Specificity note: dark tokens are nested inside :root to match upstream index.css's
+   own :root { @variant dark { ... } } pattern. Top-level @variant dark loses the cascade
+   battle against upstream tokens because :root.dark beats .dark on selector specificity.
 */
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Roboto+Mono&display=swap");
 
-/* ============================================================
-   LIGHT THEME — AppyDave warm cream
-   Three cream tones: canvas (mid) / sidebar (slightly darker) / card (lightest, warmer-than-canvas)
-   No pure white. Foreground = warm brown, not pure black.
-   ============================================================ */
 :root {
+  /* ============================================================
+     LIGHT THEME — AppyDave warm cream
+     Three cream tones: canvas (mid) / sidebar (slightly darker) / card (lightest, warmer-than-canvas).
+     No pure white. Foreground = warm brown, not pure black.
+     ============================================================ */
   --background: #ebe2ce;
   --app-chrome-background: #e2d8c0;
   --foreground: #3a2a1f;
@@ -28,29 +32,37 @@
   --border: color-mix(in srgb, #49352f 14%, transparent);
   --input: color-mix(in srgb, #49352f 16%, transparent);
   --ring: #b8860b;
-}
 
-/* ============================================================
-   DARK THEME — AppyDave warm dark
-   Activated when .dark class is on any ancestor (Tailwind v4 @custom-variant dark).
-   ============================================================ */
-@variant dark {
-  --background: #1a1515;
-  --app-chrome-background: #1a1515;
-  --foreground: #faf5ec;
-  --card: #25201e;
-  --card-foreground: #faf5ec;
-  --popover: #25201e;
-  --popover-foreground: #faf5ec;
-  --primary: #ffde59;
-  --primary-foreground: #342d2d;
-  --secondary: color-mix(in srgb, #ccba9d 12%, transparent);
-  --secondary-foreground: #faf5ec;
-  --muted: color-mix(in srgb, #faf5ec 6%, transparent);
-  --muted-foreground: #7a6e5e;
-  --accent: color-mix(in srgb, #ccba9d 12%, transparent);
-  --accent-foreground: #faf5ec;
-  --border: #3a2e2e;
-  --input: color-mix(in srgb, #faf5ec 10%, transparent);
-  --ring: #ffde59;
+  /* AppyDave wordmark colors — light theme */
+  --appy-wordmark-appy: #3a2a1f;
+  --appy-wordmark-ctrl: #b8860b;
+
+  /* ============================================================
+     DARK THEME — AppyDave warm dark
+     Nested inside :root so the resulting selector is :root.dark, matching upstream specificity.
+     ============================================================ */
+  @variant dark {
+    --background: #1a1515;
+    --app-chrome-background: #1a1515;
+    --foreground: #faf5ec;
+    --card: #25201e;
+    --card-foreground: #faf5ec;
+    --popover: #25201e;
+    --popover-foreground: #faf5ec;
+    --primary: #ffde59;
+    --primary-foreground: #342d2d;
+    --secondary: color-mix(in srgb, #ccba9d 12%, transparent);
+    --secondary-foreground: #faf5ec;
+    --muted: color-mix(in srgb, #faf5ec 6%, transparent);
+    --muted-foreground: #7a6e5e;
+    --accent: color-mix(in srgb, #ccba9d 12%, transparent);
+    --accent-foreground: #faf5ec;
+    --border: #3a2e2e;
+    --input: color-mix(in srgb, #faf5ec 10%, transparent);
+    --ring: #ffde59;
+
+    /* AppyDave wordmark colors — dark theme (matches brand: gold + yellow split) */
+    --appy-wordmark-appy: #ccba9d;
+    --appy-wordmark-ctrl: #ffde59;
+  }
 }

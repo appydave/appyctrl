@@ -13,22 +13,21 @@ Types:
 
 ## Active patches
 
-### theme-css-entry · theme-init `seam`
+### theme-css-entry `seam`
 
-|                     |                                                            |
-| ------------------- | ---------------------------------------------------------- |
-| **Files**           | `apps/web/src/main.tsx`                                    |
-| **Added**           | 2026-05-05 (phase-1)                                       |
-| **Upstream status** | N/A — these are AppyDave-owned wiring lines, not bug fixes |
+|                     |                                                 |
+| ------------------- | ----------------------------------------------- |
+| **Files**           | `apps/web/src/main.tsx`                         |
+| **Added**           | 2026-05-05 (phase-1)                            |
+| **Upstream status** | N/A — AppyDave-owned wiring line, not a bug fix |
 
-Two seam lines on `main.tsx`: (1) `import "./appydave/themes/themes.css"` overrides
-shadcn light + dark token palette with AppyDave warm cream / warm dark; (2) call
-`initializeTheme()` synchronously before `ReactDOM.createRoot` to apply `.dark` class
-from localStorage and eliminate FOUC. See `.appydave/specs/light-mode-spec.md`.
+One seam line on `main.tsx`: `import "./appydave/themes/themes.css"` overrides
+shadcn light + dark token palette with AppyDave warm cream / warm dark. Theme
+state itself is owned by upstream's `apps/web/src/hooks/useTheme.ts` (storage
+key `t3code:theme`, toggles `.dark` class) — we just reskin via tokens.
 
-**Rebase risk:** low — both lines sit at the bottom of the imports + just above the
-ReactDOM render. Conflicts only if upstream restructures startup order, in which
-case re-thread the two lines into the new sequence.
+**Rebase risk:** low — single import line near the other CSS imports. Conflicts
+only if upstream reshuffles imports, in which case re-thread our line.
 
 ### sidebar-wordmark `seam`
 
@@ -44,22 +43,6 @@ form.
 
 **Rebase risk:** low — only conflicts if upstream changes the surrounding `<Link>`
 structure. Resolution shape: keep upstream's structure, swap the wordmark element.
-
-### settings-appearance-nav `seam`
-
-|                     |                                                                 |
-| ------------------- | --------------------------------------------------------------- |
-| **Files**           | `apps/web/src/components/settings/SettingsSidebarNav.tsx`       |
-| **Added**           | 2026-05-05 (phase-1)                                            |
-| **Upstream status** | N/A — registers AppyDave settings panel into upstream nav array |
-
-Adds `"Appearance"` entry to `SETTINGS_NAV_ITEMS` and `"/settings/appearance"` to the
-`SettingsSectionPath` union type. Pairs with new route file
-`apps/web/src/routes/settings.appearance.tsx` (additive, never conflicts).
-
-**Rebase risk:** low — only conflicts if upstream adds/removes nav entries that touch
-the same array. Resolution shape: keep upstream's edits to other entries, re-add
-the Appearance entry in its position (immediately after General).
 
 ### bootstrap-cold-boot `bug-fix`
 
@@ -140,6 +123,15 @@ the same root route definition block.
 ---
 
 ## Removed patches
+
+### theme-init · settings-appearance-nav `seam` — retired 2026-05-05 (same-day)
+
+Briefly added during phase-1 implementation when I didn't realise upstream already had
+a complete theme system at `apps/web/src/hooks/useTheme.ts` with a Theme dropdown in
+Settings → General. My duplicate switcher (Settings → Appearance + own localStorage
+key `appydave.theme` + `initializeTheme()` call from main.tsx) competed with upstream's,
+producing inconsistent state. Removed entirely; upstream Theme dropdown is the single
+source of truth. AppyDave reskin is purely token-level via `themes.css`.
 
 ### fetch-timeout `bug-fix` — retired 2026-05-05
 

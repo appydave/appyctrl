@@ -11,8 +11,6 @@ import "./appydave/themes/themes.css";
 import { isElectron } from "./env";
 import { getRouter } from "./router";
 import { APP_DISPLAY_NAME } from "./branding";
-// [APPYDAVE-PATCH id="theme-init" type="seam"] sync theme application before React mounts (no FOUC)
-import { initializeTheme } from "./appydave/themes/initializeTheme";
 import { syncDocumentWindowControlsOverlayClass } from "./lib/windowControlsOverlay";
 
 // Electron loads the app from a file-backed shell, so hash history avoids path resolution issues.
@@ -24,7 +22,6 @@ if (isElectron) {
   syncDocumentWindowControlsOverlayClass();
 }
 
-initializeTheme();
 document.title = APP_DISPLAY_NAME;
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
