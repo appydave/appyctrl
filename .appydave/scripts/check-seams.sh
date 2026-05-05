@@ -31,6 +31,8 @@ SEAM_FILES=(
   "apps/server/src/bootstrap.ts"
   "apps/desktop/src/main.ts"
   "apps/web/src/components/Sidebar.tsx"
+  "apps/web/src/components/Sidebar.logic.ts"
+  "apps/web/src/components/PlanSidebar.tsx"
   "apps/web/src/components/settings/SettingsSidebarNav.tsx"
 )
 

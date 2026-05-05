@@ -20,9 +20,15 @@ Add an "Applications" section to the sidebar where the user can register externa
 
 ```ts
 [
-  { id: "claude-ai",  name: "Claude.ai", url: "https://claude.ai",         glyph: "C", openExternal: false },
-  { id: "angel-eye",  name: "AngelEye",  url: "http://localhost:5050/",     glyph: "AE", openExternal: false },
-]
+  { id: "claude-ai", name: "Claude.ai", url: "https://claude.ai", glyph: "C", openExternal: false },
+  {
+    id: "angel-eye",
+    name: "AngelEye",
+    url: "http://localhost:5050/",
+    glyph: "AE",
+    openExternal: false,
+  },
+];
 ```
 
 ## Data model
@@ -30,11 +36,11 @@ Add an "Applications" section to the sidebar where the user can register externa
 ```ts
 // packages/appydave/src/registry.ts (NEW package file)
 export type RegisteredApp = {
-  id: string;             // slug, derived from name on creation
-  name: string;           // "Claude.ai"
-  url: string;            // "https://claude.ai" — must start with http(s)://
-  glyph?: string;         // 1-2 chars displayed in sidebar
-  openExternal: boolean;  // true = BrowserWindow instead of in-panel webview
+  id: string; // slug, derived from name on creation
+  name: string; // "Claude.ai"
+  url: string; // "https://claude.ai" — must start with http(s)://
+  glyph?: string; // 1-2 chars displayed in sidebar
+  openExternal: boolean; // true = BrowserWindow instead of in-panel webview
 };
 
 export type AppRegistry = ReadonlyArray<RegisteredApp>;
@@ -50,8 +56,8 @@ export type AppRegistry = ReadonlyArray<RegisteredApp>;
 
 #### Seam edits
 
-| File | Edit | Patch id |
-|---|---|---|
+| File                                  | Edit                                                                                                    | Patch id               |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------- | ---------------------- |
 | `apps/web/src/components/Sidebar.tsx` | One import + one composition: render `<AppyAppsSection />` between Projects section and Settings footer | `sidebar-apps-section` |
 
 #### Additive
@@ -116,8 +122,8 @@ Built on shadcn `Dialog`. Used in add and edit modes.
 
 #### Seam edits
 
-| File | Edit | Patch id |
-|---|---|---|
+| File                       | Edit                                                                                            | Patch id               |
+| -------------------------- | ----------------------------------------------------------------------------------------------- | ---------------------- |
 | `apps/desktop/src/main.ts` | Wire `appyBridge.openInExternalBrowser(url)` IPC handler. One import + one ipcMain.handle line. | `bridge-open-external` |
 
 #### Additive
@@ -152,11 +158,13 @@ if (app.openExternal) {
 ### Webview vs external — implementation
 
 **Webview (default):**
+
 - Use Electron `<webview>` tag (NOT iframe — Claude.ai blocks iframe via X-Frame-Options)
 - Sandboxed, supports devtools via right-click
 - `src={app.url}`, `partition="persist:appy-apps"` for shared cookie storage across apps in this session
 
 **External BrowserWindow:**
+
 - New Electron `BrowserWindow` with the URL
 - Or simpler: `shell.openExternal(url)` (opens in user's default browser, not Chromium-controlled)
 - Decision (defer to implementation): start with `shell.openExternal` — simpler, no window lifecycle management. If user wants Chromium-with-devtools alternative, upgrade to `new BrowserWindow`.

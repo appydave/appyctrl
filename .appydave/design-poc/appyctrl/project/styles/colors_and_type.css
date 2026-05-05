@@ -10,138 +10,138 @@
    Roboto     — body, paragraphs, descriptions
    Roboto Mono — code, terminal, monospaced moments
 */
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Roboto+Mono&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Roboto+Mono&display=swap");
 
 :root {
   /* ========== BRAND PALETTE (fixed, non-negotiable) ========== */
-  --brand-brown:         #342d2d;  /* primary dark — text, headings, structure */
-  --brand-gold:          #ccba9d;  /* warm secondary — "Appy", borders, highlights */
-  --brand-yellow:        #ffde59;  /* primary CTA — "Dave", buttons, attention */
-  --brand-amber:         #c8841a;  /* numbered sequences, one-off accents ONLY */
-  --brand-muted:         #7a6e5e;  /* supporting body text, secondary labels */
-  --brand-near-white:    #faf5ec;  /* primary page background */
-  --brand-surface:       #f0ebe4;  /* secondary surface, section alternates */
-  --brand-linen:         #e8e0d4;  /* tertiary warm surface, cards */
-  --brand-border:        #d4cdc4;  /* dividers, column rules, table borders */
-  --brand-chrome:        #1a1515;  /* dark chrome — NEVER pure black */
-  --brand-dark-surface:  #25201e;  /* dark sections, contrast beats */
-  --brand-blue:          #2E91FC;  /* cool guest — links, small accents. Never fill. */
+  --brand-brown: #342d2d; /* primary dark — text, headings, structure */
+  --brand-gold: #ccba9d; /* warm secondary — "Appy", borders, highlights */
+  --brand-yellow: #ffde59; /* primary CTA — "Dave", buttons, attention */
+  --brand-amber: #c8841a; /* numbered sequences, one-off accents ONLY */
+  --brand-muted: #7a6e5e; /* supporting body text, secondary labels */
+  --brand-near-white: #faf5ec; /* primary page background */
+  --brand-surface: #f0ebe4; /* secondary surface, section alternates */
+  --brand-linen: #e8e0d4; /* tertiary warm surface, cards */
+  --brand-border: #d4cdc4; /* dividers, column rules, table borders */
+  --brand-chrome: #1a1515; /* dark chrome — NEVER pure black */
+  --brand-dark-surface: #25201e; /* dark sections, contrast beats */
+  --brand-blue: #2e91fc; /* cool guest — links, small accents. Never fill. */
 
   /* ========== SEMANTIC — FOREGROUND / BACKGROUND ROLES ========== */
   /* Light mode (default). Warm cream is home base. */
-  --fg-1:            var(--brand-brown);       /* primary text */
-  --fg-2:            var(--brand-muted);       /* secondary text */
-  --fg-3:            #9a8f7f;                  /* tertiary / meta */
-  --fg-inverse:      #ffffff;                  /* text on dark surfaces */
-  --fg-link:         var(--brand-blue);        /* links only */
-  --fg-accent:       var(--brand-amber);       /* numbered sequences / one-off */
+  --fg-1: var(--brand-brown); /* primary text */
+  --fg-2: var(--brand-muted); /* secondary text */
+  --fg-3: #9a8f7f; /* tertiary / meta */
+  --fg-inverse: #ffffff; /* text on dark surfaces */
+  --fg-link: var(--brand-blue); /* links only */
+  --fg-accent: var(--brand-amber); /* numbered sequences / one-off */
 
-  --bg-canvas:       var(--brand-near-white);  /* page */
-  --bg-surface:      var(--brand-surface);     /* section alternate */
-  --bg-card:         var(--brand-linen);       /* card / tertiary */
-  --bg-dark:         var(--brand-dark-surface);/* dark contrast beat */
-  --bg-chrome:       var(--brand-chrome);      /* dark chrome (use instead of black) */
+  --bg-canvas: var(--brand-near-white); /* page */
+  --bg-surface: var(--brand-surface); /* section alternate */
+  --bg-card: var(--brand-linen); /* card / tertiary */
+  --bg-dark: var(--brand-dark-surface); /* dark contrast beat */
+  --bg-chrome: var(--brand-chrome); /* dark chrome (use instead of black) */
 
-  --border-1:        var(--brand-border);      /* primary rule */
-  --border-strong:   #b8b0a4;                  /* emphasized rule */
+  --border-1: var(--brand-border); /* primary rule */
+  --border-strong: #b8b0a4; /* emphasized rule */
 
   /* ========== SEMANTIC — STATUS & STAGE (apps/dashboards) ========== */
-  --status-success:    #22c55e;
-  --status-active:     #16a34a;
-  --status-warning:    #f59e0b;
-  --status-error:      #dc2626;
-  --status-plan:       #b8a070;
-  --status-archived:   #9ca3af;
-  --status-favourite:  var(--brand-gold);
+  --status-success: #22c55e;
+  --status-active: #16a34a;
+  --status-warning: #f59e0b;
+  --status-error: #dc2626;
+  --status-plan: #b8a070;
+  --status-archived: #9ca3af;
+  --status-favourite: var(--brand-gold);
 
   /* ========== SEMANTIC — PRESENTATION (decks, infographics) ========== */
-  --pres-runtime:        #8b5cf6;  /* runtime / high priority */
-  --pres-doc:            #3b82f6;  /* documentation / info */
-  --pres-success:        #22c55e;
-  --pres-warning:        #f59e0b;
-  --pres-inactive:       #9ca3af;
+  --pres-runtime: #8b5cf6; /* runtime / high priority */
+  --pres-doc: #3b82f6; /* documentation / info */
+  --pres-success: #22c55e;
+  --pres-warning: #f59e0b;
+  --pres-inactive: #9ca3af;
 
   /* ========== SEMANTIC — THUMBNAIL (YouTube, high-impact) ========== */
-  --thumb-ai:            #8B5CF6;
-  --thumb-success:       #22C55E;
-  --thumb-pain:          #EF4444;
-  --thumb-impact:        #F97316;
-  --thumb-doc:           #3B82F6;
-  --thumb-warning:       #F59E0B;
+  --thumb-ai: #8b5cf6;
+  --thumb-success: #22c55e;
+  --thumb-pain: #ef4444;
+  --thumb-impact: #f97316;
+  --thumb-doc: #3b82f6;
+  --thumb-warning: #f59e0b;
 
   /* ========== TYPE — FONT FAMILIES ========== */
-  --font-display:   'Bebas Neue', 'Arial Black', Arial, sans-serif;
-  --font-heading:   'Oswald', 'Arial Narrow', Arial, sans-serif;
-  --font-body:      'Roboto', 'Helvetica Neue', Arial, sans-serif;
-  --font-mono:      'Roboto Mono', ui-monospace, Menlo, Consolas, monospace;
+  --font-display: "Bebas Neue", "Arial Black", Arial, sans-serif;
+  --font-heading: "Oswald", "Arial Narrow", Arial, sans-serif;
+  --font-body: "Roboto", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Roboto Mono", ui-monospace, Menlo, Consolas, monospace;
 
   /* ========== TYPE — SCALE (px, editorial/website defaults) ========== */
-  --fs-display:     clamp(56px, 9vw, 128px);  /* Bebas hero moments */
-  --fs-h1:          clamp(40px, 5vw, 64px);
-  --fs-h2:          clamp(28px, 3.2vw, 40px);
-  --fs-h3:          24px;
-  --fs-h4:          20px;
-  --fs-h5:          18px;
-  --fs-h6:          16px;
-  --fs-body:        17px;
-  --fs-body-sm:     15px;
-  --fs-meta:        13px;
-  --fs-code:        14px;
+  --fs-display: clamp(56px, 9vw, 128px); /* Bebas hero moments */
+  --fs-h1: clamp(40px, 5vw, 64px);
+  --fs-h2: clamp(28px, 3.2vw, 40px);
+  --fs-h3: 24px;
+  --fs-h4: 20px;
+  --fs-h5: 18px;
+  --fs-h6: 16px;
+  --fs-body: 17px;
+  --fs-body-sm: 15px;
+  --fs-meta: 13px;
+  --fs-code: 14px;
 
   /* ========== TYPE — WEIGHTS / LEADING / TRACKING ========== */
-  --fw-regular:     400;
-  --fw-medium:      500;
-  --fw-semibold:    600;
-  --fw-bold:        700;
-  --lh-tight:       1.1;
-  --lh-snug:        1.25;
-  --lh-normal:      1.55;
-  --lh-loose:       1.7;
-  --tracking-wide:  0.04em;   /* Oswald labels */
-  --tracking-tight: -0.01em;  /* large Bebas */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --lh-tight: 1.1;
+  --lh-snug: 1.25;
+  --lh-normal: 1.55;
+  --lh-loose: 1.7;
+  --tracking-wide: 0.04em; /* Oswald labels */
+  --tracking-tight: -0.01em; /* large Bebas */
 
   /* ========== SPACING (4-pt base) ========== */
-  --sp-1:   4px;
-  --sp-2:   8px;
-  --sp-3:   12px;
-  --sp-4:   16px;
-  --sp-5:   20px;
-  --sp-6:   24px;
-  --sp-8:   32px;
-  --sp-10:  40px;
-  --sp-12:  48px;
-  --sp-16:  64px;
-  --sp-20:  80px;
-  --sp-24:  96px;
-  --sp-32:  128px;
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+  --sp-10: 40px;
+  --sp-12: 48px;
+  --sp-16: 64px;
+  --sp-20: 80px;
+  --sp-24: 96px;
+  --sp-32: 128px;
 
   /* ========== RADII ========== */
-  --radius-xs:   2px;
-  --radius-sm:   4px;
-  --radius-md:   8px;
-  --radius-lg:   12px;
-  --radius-xl:   16px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
   --radius-pill: 999px;
 
   /* ========== ELEVATION / SHADOWS ========== */
   /* Warm-tinted shadows — pure black looks cold against cream. */
-  --shadow-xs:  0 1px 2px rgba(52, 45, 45, 0.06);
-  --shadow-sm:  0 2px 4px rgba(52, 45, 45, 0.08);
-  --shadow-md:  0 6px 16px rgba(52, 45, 45, 0.10);
-  --shadow-lg:  0 16px 32px rgba(52, 45, 45, 0.14);
+  --shadow-xs: 0 1px 2px rgba(52, 45, 45, 0.06);
+  --shadow-sm: 0 2px 4px rgba(52, 45, 45, 0.08);
+  --shadow-md: 0 6px 16px rgba(52, 45, 45, 0.1);
+  --shadow-lg: 0 16px 32px rgba(52, 45, 45, 0.14);
   --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.35);
 
   /* ========== LAYOUT ========== */
   --container-max: 1260px;
   --gutter-desktop: 32px;
-  --gutter-mobile:  20px;
+  --gutter-mobile: 20px;
 
   /* ========== MOTION ========== */
-  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
-  --dur-fast:   120ms;
-  --dur-base:   200ms;
-  --dur-slow:   400ms;
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 400ms;
 }
 
 /* ============================================================
@@ -150,7 +150,8 @@
    that imports this file gets the house voice for free.
    ============================================================ */
 
-html, body {
+html,
+body {
   background: var(--bg-canvas);
   color: var(--fg-1);
   font-family: var(--font-body);
@@ -169,7 +170,11 @@ h1 {
   margin: 0;
 }
 
-h2, h3, h4, h5, h6 {
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
@@ -178,11 +183,23 @@ h2, h3, h4, h5, h6 {
   font-weight: var(--fw-semibold);
   line-height: var(--lh-snug);
 }
-h2 { font-size: var(--fs-h2); font-weight: var(--fw-bold); }
-h3 { font-size: var(--fs-h3); }
-h4 { font-size: var(--fs-h4); }
-h5 { font-size: var(--fs-h5); }
-h6 { font-size: var(--fs-h6); font-weight: var(--fw-medium); }
+h2 {
+  font-size: var(--fs-h2);
+  font-weight: var(--fw-bold);
+}
+h3 {
+  font-size: var(--fs-h3);
+}
+h4 {
+  font-size: var(--fs-h4);
+}
+h5 {
+  font-size: var(--fs-h5);
+}
+h6 {
+  font-size: var(--fs-h6);
+  font-weight: var(--fw-medium);
+}
 
 p {
   margin: 0 0 var(--sp-4) 0;
@@ -195,9 +212,13 @@ a {
   text-underline-offset: 2px;
   transition: opacity var(--dur-fast) var(--ease-out);
 }
-a:hover { text-decoration: underline; opacity: 0.9; }
+a:hover {
+  text-decoration: underline;
+  opacity: 0.9;
+}
 
-code, pre {
+code,
+pre {
   font-family: var(--font-mono);
   font-size: var(--fs-code);
 }
@@ -215,7 +236,12 @@ pre {
   overflow-x: auto;
   line-height: var(--lh-normal);
 }
-pre code { background: none; border: none; padding: 0; color: inherit; }
+pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
 
 hr {
   border: 0;
@@ -231,13 +257,17 @@ blockquote {
   margin: var(--sp-6) 0;
 }
 
-::selection { background: var(--brand-yellow); color: var(--brand-brown); }
+::selection {
+  background: var(--brand-yellow);
+  color: var(--brand-brown);
+}
 
 /* ============================================================
    UTILITY CLASSES (opt-in)
    ============================================================ */
 
-.ad-label {                 /* small uppercase Oswald label */
+.ad-label {
+  /* small uppercase Oswald label */
   font-family: var(--font-heading);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
@@ -246,7 +276,8 @@ blockquote {
   font-weight: var(--fw-medium);
 }
 
-.ad-eyebrow {               /* amber numbered sequence prefix */
+.ad-eyebrow {
+  /* amber numbered sequence prefix */
   font-family: var(--font-heading);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
@@ -255,7 +286,8 @@ blockquote {
   font-size: var(--fs-meta);
 }
 
-.ad-stat {                  /* oswald large number */
+.ad-stat {
+  /* oswald large number */
   font-family: var(--font-heading);
   font-weight: var(--fw-bold);
   font-size: clamp(40px, 6vw, 88px);
@@ -264,7 +296,8 @@ blockquote {
   letter-spacing: -0.01em;
 }
 
-.ad-ghost {                 /* Bebas Neue faint backdrop watermark */
+.ad-ghost {
+  /* Bebas Neue faint backdrop watermark */
   font-family: var(--font-display);
   font-size: clamp(120px, 22vw, 320px);
   line-height: 0.85;
@@ -274,13 +307,21 @@ blockquote {
   pointer-events: none;
   user-select: none;
 }
-.ad-ghost--on-dark { color: #ffffff; opacity: 0.08; }
+.ad-ghost--on-dark {
+  color: #ffffff;
+  opacity: 0.08;
+}
 
-.ad-logo {                  /* two-tone "AppyDave" — NEVER on white */
+.ad-logo {
+  /* two-tone "AppyDave" — NEVER on white */
   font-family: var(--font-display);
   font-size: 28px;
   letter-spacing: 0.01em;
   line-height: 1;
 }
-.ad-logo .appy { color: var(--brand-gold); }
-.ad-logo .dave { color: var(--brand-yellow); }
+.ad-logo .appy {
+  color: var(--brand-gold);
+}
+.ad-logo .dave {
+  color: var(--brand-yellow);
+}

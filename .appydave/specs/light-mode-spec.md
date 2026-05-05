@@ -25,11 +25,11 @@ Ship two AppyDave-branded themes (Light = default, Dark = option) and an AppyCtr
 
 ### Seam edits (annotate `[APPYDAVE-PATCH id="..." type="seam"]` + manifest entry)
 
-| File | Edit | Patch id |
-|---|---|---|
-| `apps/web/src/main.tsx` | Already imports `./appydave/brand.css` (existing). Replace import with `./appydave/themes/themes.css` (entry that itself `@import`s the two CSS files below). | `theme-css-entry` |
-| `apps/web/src/components/Sidebar.tsx` | Replace `<T3Wordmark />` (and adjacent "Code" text) with `<AppyCtrlWordmark />`. One import + one element swap. | `sidebar-wordmark` |
-| `apps/web/src/components/settings/SettingsSidebarNav.tsx` | Append `{ label: "Appearance", to: "/settings/appearance", icon: PaintbrushIcon }` to `SETTINGS_NAV_ITEMS`; extend `SettingsSectionPath` union. | `settings-appearance-nav` |
+| File                                                      | Edit                                                                                                                                                          | Patch id                  |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| `apps/web/src/main.tsx`                                   | Already imports `./appydave/brand.css` (existing). Replace import with `./appydave/themes/themes.css` (entry that itself `@import`s the two CSS files below). | `theme-css-entry`         |
+| `apps/web/src/components/Sidebar.tsx`                     | Replace `<T3Wordmark />` (and adjacent "Code" text) with `<AppyCtrlWordmark />`. One import + one element swap.                                               | `sidebar-wordmark`        |
+| `apps/web/src/components/settings/SettingsSidebarNav.tsx` | Append `{ label: "Appearance", to: "/settings/appearance", icon: PaintbrushIcon }` to `SETTINGS_NAV_ITEMS`; extend `SettingsSectionPath` union.               | `settings-appearance-nav` |
 
 ### Additive (no seam, never conflict)
 

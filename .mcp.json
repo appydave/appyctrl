@@ -2,12 +2,7 @@
   "mcpServers": {
     "claude-flow": {
       "command": "npx",
-      "args": [
-        "-y",
-        "ruflo@latest",
-        "mcp",
-        "start"
-      ],
+      "args": ["-y", "ruflo@latest", "mcp", "start"],
       "env": {
         "npm_config_update_notifier": "false",
         "CLAUDE_FLOW_MODE": "v3",
@@ -20,12 +15,7 @@
     },
     "ruv-swarm": {
       "command": "npx",
-      "args": [
-        "-y",
-        "ruv-swarm",
-        "mcp",
-        "start"
-      ],
+      "args": ["-y", "ruv-swarm", "mcp", "start"],
       "env": {
         "npm_config_update_notifier": "false"
       },
@@ -33,12 +23,7 @@
     },
     "flow-nexus": {
       "command": "npx",
-      "args": [
-        "-y",
-        "flow-nexus@latest",
-        "mcp",
-        "start"
-      ],
+      "args": ["-y", "flow-nexus@latest", "mcp", "start"],
       "env": {
         "npm_config_update_notifier": "false"
       },

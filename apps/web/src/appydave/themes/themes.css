@@ -1,0 +1,87 @@
+/* AppyDave themes — overrides shadcn semantic tokens with warm cream / warm dark palette.
+   Light = :root (default). Dark = :root.dark (when upstream useTheme adds .dark to <html>).
+   Source palette: .appydave/design-poc/appyctrl/project/styles/{colors_and_type,appyctrl}.css
+
+   Why explicit selectors instead of @variant dark:
+   - @variant dark is a Tailwind v4 directive; it relies on Tailwind seeing this CSS file.
+   - When themes.css is loaded as a plain CSS import (which it is here), @variant doesn't
+     compile and the dark block produces no rules.
+   - :root.dark matches the same selector that upstream's :root { @variant dark { ... } }
+     compiles to, with identical specificity (0,1,1). Load order then wins — themes.css
+     loads after index.css, so our tokens take effect.
+*/
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Roboto+Mono&display=swap");
+
+/* ============================================================
+   LIGHT THEME — AppyDave warm cream
+   Three cream tones: canvas (mid) / sidebar (slightly darker) / card (lightest, warmer-than-canvas).
+   No pure white. Foreground = warm brown, not pure black.
+   ============================================================ */
+:root {
+  --background: #ebe2ce;
+  --app-chrome-background: #e2d8c0;
+  --foreground: #3a2a1f;
+  --card: #f5ebd9;
+  --card-foreground: #3a2a1f;
+  --popover: #f3ead4;
+  --popover-foreground: #3a2a1f;
+  --primary: #b8860b;
+  --primary-foreground: #faf5ec;
+  --secondary: color-mix(in srgb, #3a2a1f 6%, transparent);
+  --secondary-foreground: #3a2a1f;
+  --muted: color-mix(in srgb, #3a2a1f 4%, transparent);
+  --muted-foreground: color-mix(in srgb, #3a2a1f 62%, transparent);
+  --accent: color-mix(in srgb, #b8860b 18%, transparent);
+  --accent-foreground: #3a2a1f;
+  --border: color-mix(in srgb, #49352f 14%, transparent);
+  --input: color-mix(in srgb, #49352f 16%, transparent);
+  --ring: #b8860b;
+
+  /* AppyDave wordmark colors — light theme */
+  --appy-wordmark-appy: #3a2a1f;
+  --appy-wordmark-ctrl: #b8860b;
+
+  /* Status indicators — light theme. Replaces hardcoded sky/amber/indigo/violet/emerald
+     in upstream Sidebar.logic.ts and PlanSidebar.tsx. */
+  --ac-status-working: #b8531a; /* terracotta — POC working pill on cream */
+  --ac-status-pending: #c8841a; /* brand-amber — your turn to approve */
+  --ac-status-awaiting: #b8860b; /* deep amber — input requested */
+  --ac-status-plan-ready: #c8841a; /* brand-amber — plan available */
+  --ac-status-completed: #4d7825; /* warm green — POC diff-add hue */
+}
+
+/* ============================================================
+   DARK THEME — AppyDave warm dark
+   Activated when .dark class is on <html> via upstream useTheme hook.
+   ============================================================ */
+:root.dark {
+  --background: #1a1515;
+  --app-chrome-background: #1a1515;
+  --foreground: #faf5ec;
+  --card: #25201e;
+  --card-foreground: #faf5ec;
+  --popover: #25201e;
+  --popover-foreground: #faf5ec;
+  --primary: #ffde59;
+  --primary-foreground: #342d2d;
+  --secondary: color-mix(in srgb, #ccba9d 12%, transparent);
+  --secondary-foreground: #faf5ec;
+  --muted: color-mix(in srgb, #faf5ec 6%, transparent);
+  --muted-foreground: #7a6e5e;
+  --accent: color-mix(in srgb, #ccba9d 12%, transparent);
+  --accent-foreground: #faf5ec;
+  --border: #3a2e2e;
+  --input: color-mix(in srgb, #faf5ec 10%, transparent);
+  --ring: #ffde59;
+
+  /* AppyDave wordmark colors — dark theme (matches brand: gold + yellow split) */
+  --appy-wordmark-appy: #ccba9d;
+  --appy-wordmark-ctrl: #ffde59;
+
+  /* Status indicators — dark theme. */
+  --ac-status-working: #ffde59; /* brand-yellow — primary CTA on dark */
+  --ac-status-pending: #c8841a; /* brand-amber */
+  --ac-status-awaiting: #ccba9d; /* brand-gold */
+  --ac-status-plan-ready: #c8841a; /* brand-amber */
+  --ac-status-completed: #8fc66c; /* warm green — POC dark diff-add */
+}

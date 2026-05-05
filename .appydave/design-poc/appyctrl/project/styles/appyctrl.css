@@ -7,7 +7,9 @@
    Plus accent intensity and density.
    ============================================================ */
 
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -17,7 +19,9 @@ body {
   font-family: var(--font-body);
   background: #000;
 }
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 /* ============================================================
    Theme: DARK (warm AppyCtrl) — default
@@ -25,70 +29,70 @@ body {
 :root,
 [data-theme="dark"] {
   /* Surfaces */
-  --ac-canvas-bg:        #1a1515;
-  --ac-sidebar-bg:       #15110f;
-  --ac-topbar-bg:        #1a1515;
-  --ac-sidebar-border:   rgba(204, 186, 157, 0.10);
+  --ac-canvas-bg: #1a1515;
+  --ac-sidebar-bg: #15110f;
+  --ac-topbar-bg: #1a1515;
+  --ac-sidebar-border: rgba(204, 186, 157, 0.1);
 
   /* Foreground */
-  --ac-fg-1:             #faf5ec;
-  --ac-fg-2:             rgba(250, 245, 236, 0.62);
-  --ac-fg-3:             rgba(250, 245, 236, 0.40);
+  --ac-fg-1: #faf5ec;
+  --ac-fg-2: rgba(250, 245, 236, 0.62);
+  --ac-fg-3: rgba(250, 245, 236, 0.4);
 
   /* Accent (yellow primary) */
-  --ac-accent:           #ffde59;
-  --ac-accent-soft:      rgba(255, 222, 89, 0.12);
+  --ac-accent: #ffde59;
+  --ac-accent-soft: rgba(255, 222, 89, 0.12);
 
   /* Rows */
-  --ac-row-hover:        rgba(250, 245, 236, 0.05);
-  --ac-row-active:       rgba(250, 245, 236, 0.07);
+  --ac-row-hover: rgba(250, 245, 236, 0.05);
+  --ac-row-active: rgba(250, 245, 236, 0.07);
 
   /* Inputs */
-  --ac-input-bg:         #25201e;
-  --ac-input-border:     rgba(204, 186, 157, 0.16);
-  --ac-kbd-bg:           rgba(250, 245, 236, 0.06);
+  --ac-input-bg: #25201e;
+  --ac-input-border: rgba(204, 186, 157, 0.16);
+  --ac-kbd-bg: rgba(250, 245, 236, 0.06);
 
   /* Chrome buttons */
-  --ac-chrome-btn-bg:    rgba(250, 245, 236, 0.03);
-  --ac-chrome-btn-border:rgba(204, 186, 157, 0.18);
+  --ac-chrome-btn-bg: rgba(250, 245, 236, 0.03);
+  --ac-chrome-btn-border: rgba(204, 186, 157, 0.18);
 
   /* Popover / dropdown */
-  --ac-popover-bg:       #25201e;
-  --ac-popover-border:   rgba(204, 186, 157, 0.18);
+  --ac-popover-bg: #25201e;
+  --ac-popover-border: rgba(204, 186, 157, 0.18);
 
   /* Modal */
-  --ac-modal-bg:         #1f1a18;
-  --ac-modal-border:     rgba(204, 186, 157, 0.16);
-  --ac-modal-footer-bg:  rgba(0,0,0,0.18);
+  --ac-modal-bg: #1f1a18;
+  --ac-modal-border: rgba(204, 186, 157, 0.16);
+  --ac-modal-footer-bg: rgba(0, 0, 0, 0.18);
 
   /* Composer */
-  --ac-composer-bg:      #25201e;
-  --ac-composer-border:  rgba(204, 186, 157, 0.18);
-  --ac-composer-sep:     rgba(204, 186, 157, 0.18);
-  --ac-send-idle-bg:     rgba(250, 245, 236, 0.10);
+  --ac-composer-bg: #25201e;
+  --ac-composer-border: rgba(204, 186, 157, 0.18);
+  --ac-composer-sep: rgba(204, 186, 157, 0.18);
+  --ac-send-idle-bg: rgba(250, 245, 236, 0.1);
 
   /* Misc */
-  --ac-msg-bg:           #25201e;
-  --ac-msg-border:       rgba(204, 186, 157, 0.14);
-  --ac-pill-bg:          rgba(37, 32, 30, 0.85);
-  --ac-inline-code-bg:   rgba(204, 186, 157, 0.12);
-  --ac-inline-code-fg:   #eadcc2;
-  --ac-toggle-off:       rgba(250, 245, 236, 0.18);
+  --ac-msg-bg: #25201e;
+  --ac-msg-border: rgba(204, 186, 157, 0.14);
+  --ac-pill-bg: rgba(37, 32, 30, 0.85);
+  --ac-inline-code-bg: rgba(204, 186, 157, 0.12);
+  --ac-inline-code-fg: #eadcc2;
+  --ac-toggle-off: rgba(250, 245, 236, 0.18);
 
   /* Terminal */
-  --ac-terminal-bg:      #100c0b;
-  --ac-term-prompt:      #b9d99a;
-  --ac-term-branch:      #f0c674;
+  --ac-terminal-bg: #100c0b;
+  --ac-term-prompt: #b9d99a;
+  --ac-term-branch: #f0c674;
 
   /* Diff */
-  --ac-diff-bg:          #1a1515;
-  --ac-diff-header-bg:   rgba(0, 0, 0, 0.20);
-  --ac-diff-context-bg:  rgba(250, 245, 236, 0.025);
-  --ac-diff-add-bg:      rgba(118, 173, 84, 0.12);
-  --ac-diff-add-fg:      #8fc66c;
-  --ac-diff-del-bg:      rgba(225, 86, 85, 0.13);
-  --ac-diff-del-fg:      #e57373;
-  --ac-diff-mono:        #d8c89e;
+  --ac-diff-bg: #1a1515;
+  --ac-diff-header-bg: rgba(0, 0, 0, 0.2);
+  --ac-diff-context-bg: rgba(250, 245, 236, 0.025);
+  --ac-diff-add-bg: rgba(118, 173, 84, 0.12);
+  --ac-diff-add-fg: #8fc66c;
+  --ac-diff-del-bg: rgba(225, 86, 85, 0.13);
+  --ac-diff-del-fg: #e57373;
+  --ac-diff-mono: #d8c89e;
 }
 
 /* ============================================================
@@ -100,69 +104,69 @@ body {
    ============================================================ */
 [data-theme="light"] {
   /* Surfaces — three cream tones, no white anywhere */
-  --ac-canvas-bg:        #ebe2ce;            /* main canvas */
-  --ac-sidebar-bg:       #e2d8c0;            /* slightly darker for hierarchy */
-  --ac-topbar-bg:        #ebe2ce;
-  --ac-sidebar-border:   rgba(73, 53, 47, 0.12);
+  --ac-canvas-bg: #ebe2ce; /* main canvas */
+  --ac-sidebar-bg: #e2d8c0; /* slightly darker for hierarchy */
+  --ac-topbar-bg: #ebe2ce;
+  --ac-sidebar-border: rgba(73, 53, 47, 0.12);
 
   /* Foreground — warm brown, not pure black */
-  --ac-fg-1:             #3a2a1f;
-  --ac-fg-2:             rgba(58, 42, 31, 0.62);
-  --ac-fg-3:             rgba(58, 42, 31, 0.42);
+  --ac-fg-1: #3a2a1f;
+  --ac-fg-2: rgba(58, 42, 31, 0.62);
+  --ac-fg-3: rgba(58, 42, 31, 0.42);
 
   /* Accent — deeper amber so focus borders stay visible on cream */
-  --ac-accent:           #b8860b;
-  --ac-accent-soft:      rgba(184, 134, 11, 0.18);
+  --ac-accent: #b8860b;
+  --ac-accent-soft: rgba(184, 134, 11, 0.18);
 
-  --ac-row-hover:        rgba(58, 42, 31, 0.05);
-  --ac-row-active:       rgba(58, 42, 31, 0.09);
+  --ac-row-hover: rgba(58, 42, 31, 0.05);
+  --ac-row-active: rgba(58, 42, 31, 0.09);
 
   /* Inputs — lightest cream tone (warmer than canvas) */
-  --ac-input-bg:         #f5ebd9;
-  --ac-input-border:     rgba(73, 53, 47, 0.16);
-  --ac-kbd-bg:           rgba(58, 42, 31, 0.07);
+  --ac-input-bg: #f5ebd9;
+  --ac-input-border: rgba(73, 53, 47, 0.16);
+  --ac-kbd-bg: rgba(58, 42, 31, 0.07);
 
   /* Chrome buttons */
-  --ac-chrome-btn-bg:    #f5ebd9;
-  --ac-chrome-btn-border:rgba(73, 53, 47, 0.18);
+  --ac-chrome-btn-bg: #f5ebd9;
+  --ac-chrome-btn-border: rgba(73, 53, 47, 0.18);
 
   /* Popover / dropdown */
-  --ac-popover-bg:       #f5ebd9;
-  --ac-popover-border:   rgba(73, 53, 47, 0.16);
+  --ac-popover-bg: #f5ebd9;
+  --ac-popover-border: rgba(73, 53, 47, 0.16);
 
   /* Modal */
-  --ac-modal-bg:         #f3ead4;
-  --ac-modal-border:     rgba(73, 53, 47, 0.14);
-  --ac-modal-footer-bg:  rgba(73, 53, 47, 0.04);
+  --ac-modal-bg: #f3ead4;
+  --ac-modal-border: rgba(73, 53, 47, 0.14);
+  --ac-modal-footer-bg: rgba(73, 53, 47, 0.04);
 
   /* Composer — warmer-than-canvas cream */
-  --ac-composer-bg:      #f5ebd9;
-  --ac-composer-border:  rgba(73, 53, 47, 0.18);
-  --ac-composer-sep:     rgba(73, 53, 47, 0.16);
-  --ac-send-idle-bg:     rgba(58, 42, 31, 0.08);
+  --ac-composer-bg: #f5ebd9;
+  --ac-composer-border: rgba(73, 53, 47, 0.18);
+  --ac-composer-sep: rgba(73, 53, 47, 0.16);
+  --ac-send-idle-bg: rgba(58, 42, 31, 0.08);
 
   /* Messages / cards — warmer-than-canvas cream, never #fff */
-  --ac-msg-bg:           #f5ebd9;
-  --ac-msg-border:       rgba(73, 53, 47, 0.10);
-  --ac-pill-bg:          rgba(245, 235, 217, 0.92);
-  --ac-inline-code-bg:   rgba(133, 99, 50, 0.14);
-  --ac-inline-code-fg:   #5a3f1f;
-  --ac-toggle-off:       rgba(58, 42, 31, 0.18);
+  --ac-msg-bg: #f5ebd9;
+  --ac-msg-border: rgba(73, 53, 47, 0.1);
+  --ac-pill-bg: rgba(245, 235, 217, 0.92);
+  --ac-inline-code-bg: rgba(133, 99, 50, 0.14);
+  --ac-inline-code-fg: #5a3f1f;
+  --ac-toggle-off: rgba(58, 42, 31, 0.18);
 
   /* Terminal stays dark — kept for legibility */
-  --ac-terminal-bg:      #2a1f1c;
-  --ac-term-prompt:      #b9d99a;
-  --ac-term-branch:      #f0c674;
+  --ac-terminal-bg: #2a1f1c;
+  --ac-term-prompt: #b9d99a;
+  --ac-term-branch: #f0c674;
 
   /* Diff — same cream family */
-  --ac-diff-bg:          #ebe2ce;
-  --ac-diff-header-bg:   rgba(73, 53, 47, 0.06);
-  --ac-diff-context-bg:  rgba(73, 53, 47, 0.04);
-  --ac-diff-add-bg:      rgba(118, 153, 70, 0.20);
-  --ac-diff-add-fg:      #4d7825;
-  --ac-diff-del-bg:      rgba(193, 71, 71, 0.16);
-  --ac-diff-del-fg:      #a93434;
-  --ac-diff-mono:        #6a4a1c;
+  --ac-diff-bg: #ebe2ce;
+  --ac-diff-header-bg: rgba(73, 53, 47, 0.06);
+  --ac-diff-context-bg: rgba(73, 53, 47, 0.04);
+  --ac-diff-add-bg: rgba(118, 153, 70, 0.2);
+  --ac-diff-add-fg: #4d7825;
+  --ac-diff-del-bg: rgba(193, 71, 71, 0.16);
+  --ac-diff-del-fg: #a93434;
+  --ac-diff-mono: #6a4a1c;
 }
 
 /* Light theme: invert the terminal text foreground vs. canvas */
@@ -170,7 +174,7 @@ body {
   color: #faf5ec;
 }
 [data-theme="light"] .ac-term-pane .ac-icon-btn {
-  color: rgba(250, 245, 236, 0.70);
+  color: rgba(250, 245, 236, 0.7);
 }
 [data-theme="light"] .ac-term-pane .ac-icon-btn:hover {
   background: rgba(250, 245, 236, 0.08);
@@ -181,87 +185,110 @@ body {
    Theme: COLD T3 (the "before")
    ============================================================ */
 [data-theme="cold-t3"] {
-  --ac-canvas-bg:        #0a0a0a;
-  --ac-sidebar-bg:       #050505;
-  --ac-topbar-bg:        #0a0a0a;
-  --ac-sidebar-border:   rgba(255, 255, 255, 0.06);
+  --ac-canvas-bg: #0a0a0a;
+  --ac-sidebar-bg: #050505;
+  --ac-topbar-bg: #0a0a0a;
+  --ac-sidebar-border: rgba(255, 255, 255, 0.06);
 
-  --ac-fg-1:             #ededed;
-  --ac-fg-2:             rgba(255, 255, 255, 0.58);
-  --ac-fg-3:             rgba(255, 255, 255, 0.36);
+  --ac-fg-1: #ededed;
+  --ac-fg-2: rgba(255, 255, 255, 0.58);
+  --ac-fg-3: rgba(255, 255, 255, 0.36);
 
-  --ac-accent:           #1f6feb;
-  --ac-accent-soft:      rgba(31, 111, 235, 0.18);
+  --ac-accent: #1f6feb;
+  --ac-accent-soft: rgba(31, 111, 235, 0.18);
 
-  --ac-row-hover:        rgba(255, 255, 255, 0.05);
-  --ac-row-active:       rgba(255, 255, 255, 0.08);
+  --ac-row-hover: rgba(255, 255, 255, 0.05);
+  --ac-row-active: rgba(255, 255, 255, 0.08);
 
-  --ac-input-bg:         #161616;
-  --ac-input-border:     rgba(255, 255, 255, 0.10);
-  --ac-kbd-bg:           rgba(255, 255, 255, 0.06);
+  --ac-input-bg: #161616;
+  --ac-input-border: rgba(255, 255, 255, 0.1);
+  --ac-kbd-bg: rgba(255, 255, 255, 0.06);
 
-  --ac-chrome-btn-bg:    rgba(255, 255, 255, 0.025);
-  --ac-chrome-btn-border:rgba(255, 255, 255, 0.10);
+  --ac-chrome-btn-bg: rgba(255, 255, 255, 0.025);
+  --ac-chrome-btn-border: rgba(255, 255, 255, 0.1);
 
-  --ac-popover-bg:       #1c1c1c;
-  --ac-popover-border:   rgba(255, 255, 255, 0.08);
+  --ac-popover-bg: #1c1c1c;
+  --ac-popover-border: rgba(255, 255, 255, 0.08);
 
-  --ac-modal-bg:         #161616;
-  --ac-modal-border:     rgba(255, 255, 255, 0.08);
-  --ac-modal-footer-bg:  rgba(0,0,0,0.20);
+  --ac-modal-bg: #161616;
+  --ac-modal-border: rgba(255, 255, 255, 0.08);
+  --ac-modal-footer-bg: rgba(0, 0, 0, 0.2);
 
-  --ac-composer-bg:      #161616;
-  --ac-composer-border:  rgba(255, 255, 255, 0.08);
-  --ac-composer-sep:     rgba(255, 255, 255, 0.10);
-  --ac-send-idle-bg:     rgba(255, 255, 255, 0.10);
+  --ac-composer-bg: #161616;
+  --ac-composer-border: rgba(255, 255, 255, 0.08);
+  --ac-composer-sep: rgba(255, 255, 255, 0.1);
+  --ac-send-idle-bg: rgba(255, 255, 255, 0.1);
 
-  --ac-msg-bg:           #161616;
-  --ac-msg-border:       rgba(255, 255, 255, 0.06);
-  --ac-pill-bg:          rgba(28, 28, 28, 0.85);
-  --ac-inline-code-bg:   rgba(255, 255, 255, 0.06);
-  --ac-inline-code-fg:   #d6d6d6;
-  --ac-toggle-off:       rgba(255, 255, 255, 0.18);
+  --ac-msg-bg: #161616;
+  --ac-msg-border: rgba(255, 255, 255, 0.06);
+  --ac-pill-bg: rgba(28, 28, 28, 0.85);
+  --ac-inline-code-bg: rgba(255, 255, 255, 0.06);
+  --ac-inline-code-fg: #d6d6d6;
+  --ac-toggle-off: rgba(255, 255, 255, 0.18);
 
-  --ac-terminal-bg:      #050505;
-  --ac-term-prompt:      #58c466;
-  --ac-term-branch:      #4eb1ff;
+  --ac-terminal-bg: #050505;
+  --ac-term-prompt: #58c466;
+  --ac-term-branch: #4eb1ff;
 
-  --ac-diff-bg:          #0a0a0a;
-  --ac-diff-header-bg:   rgba(255, 255, 255, 0.03);
-  --ac-diff-context-bg:  rgba(255, 255, 255, 0.025);
-  --ac-diff-add-bg:      rgba(46, 160, 67, 0.16);
-  --ac-diff-add-fg:      #58c466;
-  --ac-diff-del-bg:      rgba(248, 81, 73, 0.16);
-  --ac-diff-del-fg:      #f85149;
-  --ac-diff-mono:        #cccccc;
+  --ac-diff-bg: #0a0a0a;
+  --ac-diff-header-bg: rgba(255, 255, 255, 0.03);
+  --ac-diff-context-bg: rgba(255, 255, 255, 0.025);
+  --ac-diff-add-bg: rgba(46, 160, 67, 0.16);
+  --ac-diff-add-fg: #58c466;
+  --ac-diff-del-bg: rgba(248, 81, 73, 0.16);
+  --ac-diff-del-fg: #f85149;
+  --ac-diff-mono: #cccccc;
 }
 
 /* ============================================================
    Accent intensity (yellow vs gold)
    ============================================================ */
-[data-theme="dark"][data-accent="subtle"]   { --ac-accent: #ccba9d; }
-[data-theme="dark"][data-accent="loud"]     { --ac-accent: #ffde59; --ac-accent-soft: rgba(255, 222, 89, 0.22); }
-[data-theme="light"][data-accent="loud"]    { --ac-accent: #d4a017; --ac-accent-soft: rgba(212, 160, 23, 0.26); }
-[data-theme="light"][data-accent="subtle"]  { --ac-accent: #c9b88a; }
-[data-accent="loud"] .ac-split-main { color: var(--ac-accent) !important; }
+[data-theme="dark"][data-accent="subtle"] {
+  --ac-accent: #ccba9d;
+}
+[data-theme="dark"][data-accent="loud"] {
+  --ac-accent: #ffde59;
+  --ac-accent-soft: rgba(255, 222, 89, 0.22);
+}
+[data-theme="light"][data-accent="loud"] {
+  --ac-accent: #d4a017;
+  --ac-accent-soft: rgba(212, 160, 23, 0.26);
+}
+[data-theme="light"][data-accent="subtle"] {
+  --ac-accent: #c9b88a;
+}
+[data-accent="loud"] .ac-split-main {
+  color: var(--ac-accent) !important;
+}
 
 /* ============================================================
    Density
    ============================================================ */
-[data-density="compact"] .ac-thread-row { padding-top: 4px !important; padding-bottom: 4px !important; }
-[data-density="compact"] .ac-chrome-btn { height: 26px !important; }
+[data-density="compact"] .ac-thread-row {
+  padding-top: 4px !important;
+  padding-bottom: 4px !important;
+}
+[data-density="compact"] .ac-chrome-btn {
+  height: 26px !important;
+}
 
 /* ============================================================
    Generic chrome
    ============================================================ */
 .ac-icon-btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 24px; height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
   background: transparent;
-  border: none; border-radius: 5px;
+  border: none;
+  border-radius: 5px;
   color: var(--ac-fg-2);
   cursor: pointer;
-  transition: background 120ms var(--ease-out), color 120ms var(--ease-out);
+  transition:
+    background 120ms var(--ease-out),
+    color 120ms var(--ease-out);
 }
 .ac-icon-btn:hover {
   background: var(--ac-row-hover);
@@ -289,13 +316,18 @@ body {
 /* ============================================================
    Working pill — themed per-mode so it never clashes
    ============================================================ */
-.ac-working-pill { color: var(--ac-accent); }
+.ac-working-pill {
+  color: var(--ac-accent);
+}
 .ac-working-dot {
   background: var(--ac-accent);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--ac-accent) 18%, transparent);
 }
 /* On light cream: use a saturated terracotta so "Working" actually reads. */
-[data-theme="light"] .ac-working-pill { color: #b8531a; font-weight: 600; }
+[data-theme="light"] .ac-working-pill {
+  color: #b8531a;
+  font-weight: 600;
+}
 [data-theme="light"] .ac-working-dot {
   background: #d2691e;
   box-shadow: 0 0 0 3px rgba(210, 105, 30, 0.22);
@@ -305,15 +337,25 @@ body {
    Animations
    ============================================================ */
 @keyframes ac-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.45; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
 }
 
 /* ============================================================
    Scrollbar
    ============================================================ */
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
 ::-webkit-scrollbar-thumb {
   background: rgba(204, 186, 157, 0.14);
   border-radius: 999px;
@@ -325,7 +367,7 @@ body {
   background-clip: padding-box;
 }
 [data-theme="cold-t3"] ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.1);
   background-clip: padding-box;
 }
 [data-theme="light"] ::-webkit-scrollbar-thumb {
@@ -336,5 +378,11 @@ body {
 /* ============================================================
    Selection
    ============================================================ */
-::selection { background: var(--ac-accent); color: var(--brand-brown); }
-[data-theme="cold-t3"] ::selection { background: #1f6feb; color: #fff; }
+::selection {
+  background: var(--ac-accent);
+  color: var(--brand-brown);
+}
+[data-theme="cold-t3"] ::selection {
+  background: #1f6feb;
+  color: #fff;
+}

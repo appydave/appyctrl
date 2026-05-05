@@ -5,7 +5,8 @@ import { createHashHistory, createBrowserHistory } from "@tanstack/react-router"
 
 import "@xterm/xterm/css/xterm.css";
 import "./index.css";
-import "./appydave/brand.css"; // [APPYDAVE-PATCH] warm dark colour tokens
+// [APPYDAVE-PATCH id="theme-css-entry" type="seam"] AppyDave warm cream + warm dark themes
+import "./appydave/themes/themes.css";
 
 import { isElectron } from "./env";
 import { getRouter } from "./router";

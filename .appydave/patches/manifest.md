@@ -13,12 +13,88 @@ Types:
 
 ## Active patches
 
+### theme-css-entry `seam`
+
+|                     |                                                 |
+| ------------------- | ----------------------------------------------- |
+| **Files**           | `apps/web/src/main.tsx`                         |
+| **Added**           | 2026-05-05 (phase-1)                            |
+| **Upstream status** | N/A — AppyDave-owned wiring line, not a bug fix |
+
+One seam line on `main.tsx`: `import "./appydave/themes/themes.css"` overrides
+shadcn light + dark token palette with AppyDave warm cream / warm dark. Theme
+state itself is owned by upstream's `apps/web/src/hooks/useTheme.ts` (storage
+key `t3code:theme`, toggles `.dark` class) — we just reskin via tokens.
+
+**Rebase risk:** low — single import line near the other CSS imports. Conflicts
+only if upstream reshuffles imports, in which case re-thread our line.
+
+### status-pill-colors `seam`
+
+|                     |                                                                      |
+| ------------------- | -------------------------------------------------------------------- |
+| **Files**           | `apps/web/src/components/Sidebar.logic.ts` (resolveThreadStatusPill) |
+| **Added**           | 2026-05-05 (phase-1 polish)                                          |
+| **Upstream status** | N/A — AppyDave-owned brand reskin                                    |
+
+`resolveThreadStatusPill()` returns Tailwind class strings for Working / Connecting /
+Pending Approval / Awaiting Input / Plan Ready / Completed pills. Upstream uses raw
+Tailwind palette literals (`text-sky-600 dark:text-sky-300/80`, etc.) which bypass
+shadcn tokens and produce cold T3 blue/violet/indigo even when our themes.css has
+overridden the rest of the palette. We swap each to a CSS variable arbitrary value
+(`text-[var(--ac-status-working)]`, `bg-[var(--ac-status-pending)]`, etc.) where the
+variables are defined in `apps/web/src/appydave/themes/themes.css` for both light
+and dark.
+
+Light palette: terracotta (working), brand-amber (pending/plan-ready), deep amber
+(awaiting), warm green (completed).
+Dark palette: brand-yellow (working), brand-amber (pending/plan-ready), brand-gold
+(awaiting), warm green (completed).
+
+**Rebase risk:** medium — the function body is one of the more active upstream
+files. Resolution shape on conflict: keep upstream's logic + state shape, re-apply
+the colorClass/dotClass swaps. The annotation is at the top of the function body
+to make it visible during conflict resolution.
+
+### plan-sidebar-colors `seam`
+
+|                     |                                           |
+| ------------------- | ----------------------------------------- |
+| **Files**           | `apps/web/src/components/PlanSidebar.tsx` |
+| **Added**           | 2026-05-05 (phase-1 polish)               |
+| **Upstream status** | N/A — AppyDave-owned brand reskin         |
+
+Three swaps in `PlanSidebar.tsx`: `stepStatusIcon()` (lines 35, 42 — completed +
+inProgress badges), the "PLAN" header `<Badge>` (line 143), and the per-step row
+background tints (lines 215–216). All move from raw Tailwind palette
+(`bg-emerald-500/15`, `bg-blue-500/15`, `text-blue-400`) to `--ac-status-*` token
+arbitrary values that resolve to AppyDave colors per theme.
+
+**Rebase risk:** low — PlanSidebar is comparatively stable, and the three change
+sites are in self-contained blocks. Resolution shape: keep upstream's structural
+edits, re-apply the three colour-class swaps.
+
+### sidebar-wordmark `seam`
+
+|                     |                                                                 |
+| ------------------- | --------------------------------------------------------------- |
+| **Files**           | `apps/web/src/components/Sidebar.tsx`                           |
+| **Added**           | 2026-05-05 (phase-1, supersedes earlier AppyDave wordmark seam) |
+| **Upstream status** | N/A — AppyDave-owned brand                                      |
+
+`<AppyWordmark />` (AppyDave brand, removed) → `<AppyCtrlWordmark />` (AppyCtrl brand).
+Single import + single element swap. Earlier patch annotation updated to phase-1
+form.
+
+**Rebase risk:** low — only conflicts if upstream changes the surrounding `<Link>`
+structure. Resolution shape: keep upstream's structure, swap the wordmark element.
+
 ### bootstrap-cold-boot `bug-fix`
 
-|                     |                                                                                             |
-| ------------------- | ------------------------------------------------------------------------------------------- |
-| **Files**           | `apps/web/src/environments/primary/auth.ts`, `apps/web/src/environments/primary/context.ts` |
-| **Added**           | 2026-05-05                                                                                  |
+|                     |                                                                                                |
+| ------------------- | ---------------------------------------------------------------------------------------------- |
+| **Files**           | `apps/web/src/environments/primary/auth.ts`, `apps/web/src/environments/primary/context.ts`    |
+| **Added**           | 2026-05-05                                                                                     |
 | **Upstream status** | No fix expected — would require either bootstrap-cache hint or sequencing window-after-backend |
 
 **Read first:** `.appydave/docs/boot-sequence.md` — full debugging postmortem with UAT recipe.
@@ -92,6 +168,15 @@ the same root route definition block.
 ---
 
 ## Removed patches
+
+### theme-init · settings-appearance-nav `seam` — retired 2026-05-05 (same-day)
+
+Briefly added during phase-1 implementation when I didn't realise upstream already had
+a complete theme system at `apps/web/src/hooks/useTheme.ts` with a Theme dropdown in
+Settings → General. My duplicate switcher (Settings → Appearance + own localStorage
+key `appydave.theme` + `initializeTheme()` call from main.tsx) competed with upstream's,
+producing inconsistent state. Removed entirely; upstream Theme dropdown is the single
+source of truth. AppyDave reskin is purely token-level via `themes.css`.
 
 ### fetch-timeout `bug-fix` — retired 2026-05-05
 
