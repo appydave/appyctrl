@@ -13,7 +13,8 @@ import { QueryClient, useQueryClient } from "@tanstack/react-query";
 import { APP_DISPLAY_NAME } from "../branding";
 import { AppSidebarLayout } from "../components/AppSidebarLayout";
 // [APPYDAVE-PATCH id="splash-pending" type="bug-fix"] — see .appydave/docs/boot-sequence.md
-import { SplashScreen } from "../components/SplashScreen";
+// [APPYDAVE-PATCH id="splash-appy-logo" type="seam"] AppyDave-branded splash replaces upstream SplashScreen
+import { AppySplashScreen } from "../appydave/AppySplashScreen";
 import { CommandPalette } from "../components/CommandPalette";
 import { SshPasswordPromptDialog } from "../components/desktop/SshPasswordPromptDialog";
 import {
@@ -93,7 +94,7 @@ export const Route = createRootRouteWithContext<{
     };
   },
   component: RootRouteView,
-  pendingComponent: SplashScreen, // [APPYDAVE-PATCH id="splash-pending"] without this, router renders nothing during beforeLoad → black screen
+  pendingComponent: AppySplashScreen, // [APPYDAVE-PATCH id="splash-pending" / "splash-appy-logo"] AppyDave-branded splash; without pendingComponent, router renders nothing during beforeLoad → black screen
   errorComponent: RootRouteErrorView,
   head: () => ({
     meta: [{ name: "title", content: APP_DISPLAY_NAME }],
