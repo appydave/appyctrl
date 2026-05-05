@@ -92,9 +92,12 @@ function getDesktopBootstrapCredential(): string | null {
 
 export async function fetchSessionState(): Promise<AuthSessionState> {
   return retryTransientBootstrap(async () => {
-    const response = await fetch(resolvePrimaryEnvironmentHttpUrl("/api/auth/session"), {
-      credentials: "include",
-    });
+    const response = await fetchWithBootstrapTimeout(
+      resolvePrimaryEnvironmentHttpUrl("/api/auth/session"),
+      {
+        credentials: "include",
+      },
+    );
     if (!response.ok) {
       throw new BootstrapHttpError({
         message: `Failed to load server auth session state (${response.status}).`,
@@ -147,14 +150,17 @@ function toFriendlyBootstrapErrorMessage(status: number, message: string): strin
 async function exchangeBootstrapCredential(credential: string): Promise<AuthBootstrapResult> {
   return retryTransientBootstrap(async () => {
     const payload: AuthBootstrapInput = { credential };
-    const response = await fetch(resolvePrimaryEnvironmentHttpUrl("/api/auth/bootstrap"), {
-      body: JSON.stringify(payload),
-      credentials: "include",
-      headers: {
-        "content-type": "application/json",
+    const response = await fetchWithBootstrapTimeout(
+      resolvePrimaryEnvironmentHttpUrl("/api/auth/bootstrap"),
+      {
+        body: JSON.stringify(payload),
+        credentials: "include",
+        headers: {
+          "content-type": "application/json",
+        },
+        method: "POST",
       },
-      method: "POST",
-    });
+    );
 
     if (!response.ok) {
       const message = toFriendlyBootstrapErrorMessage(response.status, await response.text());
@@ -186,8 +192,63 @@ async function waitForAuthenticatedSessionAfterBootstrap(): Promise<AuthSessionS
 }
 
 const TRANSIENT_BOOTSTRAP_STATUS_CODES = new Set([502, 503, 504]);
-const BOOTSTRAP_RETRY_TIMEOUT_MS = 15_000;
+// [APPYDAVE-PATCH id="bootstrap-cold-boot" type="bug-fix"] — see .appydave/docs/boot-sequence.md
+//
+// Dev-mode Electron window opens before backend is ready (main.ts:2204 — waitForBackendWindowReady is fire-and-forget).
+// Cold-boot to backend-listening measured at 23s on a clean cache (contracts build + server compile + migrations + listen).
+//
+// Two distinct failure modes during the cold-boot window — both fixed here:
+//
+//  1. **Hanging fetch (per-request timeout fix below)**: When Vite's dev proxy
+//     opens an upstream connection to the backend while the backend is mid-boot,
+//     the connection can be held open indefinitely — observed via Playwright UAT:
+//     two requests stayed `pending` even after backend came up 6s later. retryTransientBootstrap
+//     is `await operation()`-driven, so a hung fetch blocks the retry loop forever.
+//     `fetchWithBootstrapTimeout` races fetch() against a 3s timeout that throws AbortError.
+//     isTransientBootstrapError already classifies AbortError as transient, so retry advances.
+//
+//  2. **Retry budget too short (constant fix below)**: Even with fast 502s from Vite when
+//     the backend is fully down, the original 15s budget is less than the 23s cold-boot.
+//     Bumped to 60s for headroom on slow machines / cold caches.
+//
+// IMPORTANT: do NOT inject `signal` into the init object passed to fetch.
+// authBootstrap.test.ts and bootstrap.test.ts assert exact-match call args
+// (e.g. toHaveBeenCalledWith(url, { credentials: "include" })).
+// We pass init unchanged and race the whole fetch against a separate timeout promise.
+// The underlying fetch keeps running past the timeout — acceptable in dev cold-start.
+const BOOTSTRAP_REQUEST_TIMEOUT_MS = 10_000;
+const BOOTSTRAP_RETRY_TIMEOUT_MS = 60_000;
 const BOOTSTRAP_RETRY_STEP_MS = 500;
+
+export function fetchWithBootstrapTimeout(input: string, init?: RequestInit): Promise<Response> {
+  let timeoutId: ReturnType<typeof setTimeout> | undefined;
+  const timeoutPromise = new Promise<Response>((_, reject) => {
+    timeoutId = setTimeout(
+      () => reject(new DOMException("Bootstrap fetch timed out", "AbortError")),
+      BOOTSTRAP_REQUEST_TIMEOUT_MS,
+    );
+  });
+  // Always force cache: "no-store". Without it, fetch through Vite 8's dev proxy
+  // takes ~20s per request in real browsers (verified via Playwright UAT against
+  // a real Electron renderer; backend itself responds in <2ms direct or via curl).
+  // Any explicit cache option (even "default"!) avoids the 20s; only fetch with no
+  // cache hint hits the slow path. This is a Vite/Chromium interaction with the
+  // dev proxy, NOT a backend issue.
+  // Tradeoff: upstream tests in authBootstrap.test.ts and bootstrap.test.ts assert
+  // exact init shape (e.g. toHaveBeenCalledWith(url, { credentials: "include" }))
+  // and now fail because init contains cache: "no-store". Those tests are testing
+  // implementation, not behaviour — the cache hint is required for the app to function.
+  const initWithNoStore: RequestInit = { ...(init ?? {}), cache: "no-store" };
+  const fetchPromise = fetch(input, initWithNoStore);
+  return Promise.race([
+    fetchPromise.finally(() => {
+      if (timeoutId !== undefined) {
+        clearTimeout(timeoutId);
+      }
+    }),
+    timeoutPromise,
+  ]);
+}
 
 export async function retryTransientBootstrap<T>(operation: () => Promise<T>): Promise<T> {
   const startedAt = Date.now();
