@@ -118,6 +118,21 @@ Built on shadcn `Dialog`. Used in add and edit modes.
 
 ## Phase 3 — Main-panel webview + external bridge
 
+**Maps to:** Design 09 in the AppyCtrl design-doc series.
+**See also:** [Design 10 — Swarm Playbook](../kdd/meta/swarm-playbook.md) for the cross-phase agent topology this build follows.
+
+### Decision-needed-in-research (locked by researcher one-shot before fanout)
+
+**Webview primitive choice.** Three Electron options for embedding remote content in the main panel:
+
+| Primitive | DOM-mounted? | Positioning | Status |
+| --- | --- | --- | --- |
+| `<webview>` tag | yes — inside React tree | flexbox-natural | **deprecated** (Electron docs) — security caveats, future removal |
+| `BrowserView` | no — overlay positioned from main process | absolute bounds via IPC | legacy; superseded |
+| `WebContentsView` | no — same overlay model | bounds via IPC | **modern** (Electron 30+); official replacement for BrowserView |
+
+Researcher one-shot must investigate whether t3code already imports any of these primitives (likely for diff/terminal panes). If t3code commits to one, we follow that precedent. Otherwise default: **`WebContentsView`** for future-proofing, accepting the bounds-sync complexity. Decision recorded as Phase 3 ADR before fanout.
+
 ### Files
 
 #### Seam edits
@@ -171,12 +186,16 @@ if (app.openExternal) {
 
 ### Phase 3 acceptance criteria
 
-1. Click app row with `openExternal=false` → main panel renders the app in a webview, sidebar stays put, route is `/apps/$id`
-2. Click app row with `openExternal=true` → app opens in external browser; main panel does NOT change
-3. Toggling `openExternal` in modal changes click behaviour for that app immediately
-4. Webview persists cookies across app reloads (verified by signing into Claude.ai once and checking session survives a route change away and back)
-5. `<webview>` errors (network unreachable, etc.) show a fallback panel with retry button
-6. `check-seams.sh` reports one new seam edit (`apps/desktop/src/main.ts`)
+1. **Click on `openExternal=false` row** → main panel renders the app in the chosen webview primitive at route `/apps/$id`. Sidebar stays put.
+2. **Click on `openExternal=true` row** → URL handed to `shell.openExternal()`; main panel does NOT change.
+3. **Toggle `openExternal` in modal** → next click on that row uses the new behaviour without app restart.
+4. **Session / cookie persistence** — webview uses a stable persistent partition (e.g. `partition="persist:appy-apps"` or equivalent for the chosen primitive). Sign in to Claude.ai once → session survives navigating to another app and back, survives Electron app restart. Verifiable in devtools → Application → Storage.
+5. **In-webview navigation policy** — same-origin link clicks navigate within the webview. External-domain `target="_blank"` / `window.open` is intercepted and routed to `shell.openExternal()`. Concrete check: clicking a Claude.ai support-doc link does NOT escape into the main app panel.
+6. **Error UI** — when the URL is unreachable (DNS failure, connection refused, 4xx/5xx returned by the host), main panel shows a fallback: app name + URL + readable reason + **Retry** button. Retry re-mounts the webview.
+7. **CSP / sandbox posture** — webview defaults: `nodeIntegration: false`, `contextIsolation: true`, no remote module. Document the choice in the Phase 3 ADR.
+8. **Bridge contract** — `window.appyBridge.openInExternalBrowser(url: string): Promise<void>` exposed via Electron preload, wired through one IPC channel handled in main process. Type lives in `packages/appydave/src/bridge.ts`.
+9. **`check-seams.sh`** reports one new seam edit (`apps/desktop/src/main.ts`), annotated `[APPYDAVE-PATCH id="bridge-open-external" type="seam"]` and listed in the manifest.
+10. **No regression in Phase 2 ACs** — sidebar add/edit/delete behaviour unchanged.
 
 ## Cross-phase notes
 
