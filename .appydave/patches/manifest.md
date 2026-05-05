@@ -74,6 +74,47 @@ arbitrary values that resolve to AppyDave colors per theme.
 sites are in self-contained blocks. Resolution shape: keep upstream's structural
 edits, re-apply the three colour-class swaps.
 
+### splash-appy-logo `seam`
+
+|                     |                                                            |
+| ------------------- | ---------------------------------------------------------- |
+| **Files**           | `apps/web/src/routes/__root.tsx`                           |
+| **Added**           | 2026-05-06 (phase-2 polish)                                |
+| **Upstream status** | N/A — AppyDave-owned brand                                 |
+
+Co-located with the existing `splash-pending` patch on `__root.tsx`. The
+`pendingComponent` for the root route now points to `AppySplashScreen` (lives at
+`apps/web/src/appydave/AppySplashScreen.tsx`) instead of the upstream
+`SplashScreen`. The new component renders the AppyDave logo
+(`apps/web/public/appydave-splash.png`, copied from `appydave.com/apps/web/public/`)
+plus the AppyCtrlWordmark on the theme-aware `bg-background` canvas. Upstream's
+`SplashScreen.tsx` is left untouched so the rebase target file is unchanged.
+
+**Rebase risk:** low — touches the same line as `splash-pending` (one import +
+one component reference). Conflicts only if upstream changes the root route
+definition. Resolution shape: keep upstream changes, re-apply both patches'
+references to `AppySplashScreen`.
+
+### sidebar-apps-section `seam`
+
+|                     |                                       |
+| ------------------- | ------------------------------------- |
+| **Files**           | `apps/web/src/components/Sidebar.tsx` |
+| **Added**           | 2026-05-05 (phase-2)                  |
+| **Upstream status** | N/A — AppyDave-owned feature          |
+
+One import + one render line, mounted between the Projects `</SidebarGroup>` and the
+closing `</SidebarContent>` (line ~2710). The component lives at
+`apps/web/src/appydave/apps/AppyAppsSection.tsx` and owns the entire Applications
+section: header label, "+" add button, list of `<AppyAppRow>` items pulled from
+`useAppRegistry()`, and the `<AppyAppModal>` for add/edit/delete. Pre-seeded with
+two apps (Claude.ai + AngelEye) on first load.
+
+**Rebase risk:** low — the seam edit is a sibling component append at the bottom
+of the Projects section's container. Only conflicts if upstream restructures the
+SidebarContent flex chain. Resolution shape: keep upstream's restructure, re-add
+the `<AppyAppsSection />` line in equivalent position.
+
 ### sidebar-wordmark `seam`
 
 |                     |                                                                 |

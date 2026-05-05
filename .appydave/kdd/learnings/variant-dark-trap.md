@@ -35,7 +35,7 @@ What unblocked me: opened devtools → Computed → searched for `--background` 
 
 ## Root cause
 
-`@variant` is a Tailwind v4 *directive*, not a CSS at-rule. It's processed by Tailwind's CSS preprocessor and replaced with the resolved selector. A file only goes through that preprocessor if it's part of the Tailwind entry chain — typically the file that contains `@import "tailwindcss"` and `@custom-variant dark (...)`.
+`@variant` is a Tailwind v4 _directive_, not a CSS at-rule. It's processed by Tailwind's CSS preprocessor and replaced with the resolved selector. A file only goes through that preprocessor if it's part of the Tailwind entry chain — typically the file that contains `@import "tailwindcss"` and `@custom-variant dark (...)`.
 
 `appydave/themes/themes.css` is imported by `main.tsx` as a plain CSS module:
 
