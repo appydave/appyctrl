@@ -1,5 +1,7 @@
 import { contextBridge, ipcRenderer } from "electron";
 import type { DesktopBridge } from "@t3tools/contracts";
+// [APPYDAVE-PATCH id="appydave-preload" type="seam" added="2026-05-06"]
+import { registerAppyBridge } from "./appydave/appyBridge.js";
 
 const PICK_FOLDER_CHANNEL = "desktop:pick-folder";
 const CONFIRM_CHANNEL = "desktop:confirm";
@@ -145,3 +147,5 @@ contextBridge.exposeInMainWorld("desktopBridge", {
     };
   },
 } satisfies DesktopBridge);
+
+registerAppyBridge();

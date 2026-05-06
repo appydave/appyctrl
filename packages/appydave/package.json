@@ -16,6 +16,11 @@
       "types": "./src/registry.ts",
       "import": "./src/registry.ts",
       "require": "./src/registry.ts"
+    },
+    "./bridge": {
+      "types": "./src/bridge.ts",
+      "import": "./src/bridge.ts",
+      "require": "./src/bridge.ts"
     }
   },
   "scripts": {

@@ -1,4 +1,5 @@
 import type { RegisteredApp } from "@t3tools/appydave-registry/registry";
+import { useNavigate } from "@tanstack/react-router";
 import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 import { SidebarGroup, SidebarMenu } from "../../components/ui/sidebar";
@@ -15,14 +16,21 @@ type ModalState =
 export function AppyAppsSection() {
   const { apps, add, update, delete: removeApp, getById } = useAppRegistry();
   const [modalState, setModalState] = useState<ModalState>({ open: false });
+  const navigate = useNavigate();
 
   const closeModal = () => setModalState({ open: false });
 
   const openAddModal = () => setModalState({ open: true, mode: "add" });
 
-  const handleActivate = (_id: string) => {
-    // Phase 3 will navigate to /apps/$id (or call appyBridge.openInExternalBrowser
-    // when the app's openExternal flag is set). For Phase 2 this is a no-op.
+  // [APPYDAVE-PATCH id="apps-section-activate" type="seam" added="2026-05-06"]
+  const handleActivate = (id: string) => {
+    const app = getById(id);
+    if (!app) return;
+    if (app.openExternal) {
+      void window.desktopBridge?.openExternal(app.url);
+    } else {
+      void navigate({ to: "/apps/$id", params: { id } });
+    }
   };
 
   const handleEdit = (id: string) => {
