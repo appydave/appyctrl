@@ -22,7 +22,7 @@ export function AppyAppsSection() {
 
   const openAddModal = () => setModalState({ open: true, mode: "add" });
 
-  // [APPYDAVE-PATCH id="apps-section-activate" type="seam" added="2026-05-06"]
+  // Phase 3: branch on openExternal flag
   const handleActivate = (id: string) => {
     const app = getById(id);
     if (!app) return;

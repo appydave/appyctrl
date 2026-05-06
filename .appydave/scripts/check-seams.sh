@@ -34,6 +34,7 @@ SEAM_FILES=(
   "apps/web/src/components/Sidebar.logic.ts"
   "apps/web/src/components/PlanSidebar.tsx"
   "apps/web/src/components/settings/SettingsSidebarNav.tsx"
+  "apps/desktop/src/preload.ts"
 )
 
 echo "═══════════════════════════════════════════════════════════"

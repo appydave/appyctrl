@@ -24,6 +24,7 @@
         "electron-updater": "^6.6.2",
       },
       "devDependencies": {
+        "@t3tools/appydave-registry": "workspace:*",
         "@t3tools/client-runtime": "workspace:*",
         "@t3tools/contracts": "workspace:*",
         "@t3tools/shared": "workspace:*",

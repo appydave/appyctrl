@@ -11,6 +11,7 @@ export function WebviewPane({ app }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const viewIdRef = useRef<number | null>(null);
   const [error, setError] = useState(false);
+  const [errorReason, setErrorReason] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
@@ -20,11 +21,12 @@ export function WebviewPane({ app }: Props) {
     if (!window.appyBridge) return; // non-Electron env
 
     const rect = el.getBoundingClientRect();
+    const dpr = window.devicePixelRatio;
     const bounds = {
-      x: Math.round(rect.left),
-      y: Math.round(rect.top),
-      width: Math.round(rect.width),
-      height: Math.round(rect.height),
+      x: Math.round(rect.left * dpr),
+      y: Math.round(rect.top * dpr),
+      width: Math.round(rect.width * dpr),
+      height: Math.round(rect.height * dpr),
     };
 
     let cancelled = false;
@@ -58,15 +60,27 @@ export function WebviewPane({ app }: Props) {
     const observer = new ResizeObserver(() => {
       if (viewIdRef.current === null) return;
       const rect = el.getBoundingClientRect();
+      const dpr = window.devicePixelRatio;
       void window.appyBridge?.resizeWebview(viewIdRef.current, {
-        x: Math.round(rect.left),
-        y: Math.round(rect.top),
-        width: Math.round(rect.width),
-        height: Math.round(rect.height),
+        x: Math.round(rect.left * dpr),
+        y: Math.round(rect.top * dpr),
+        width: Math.round(rect.width * dpr),
+        height: Math.round(rect.height * dpr),
       });
     });
     observer.observe(el);
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!window.appyBridge) return;
+    const unsubscribe = window.appyBridge.onWebviewLoadFailed(({ viewId, errorDescription }) => {
+      if (viewId === viewIdRef.current) {
+        setError(true);
+        setErrorReason(errorDescription);
+      }
+    });
+    return unsubscribe;
   }, []);
 
   if (!window.appyBridge) {
@@ -84,11 +98,13 @@ export function WebviewPane({ app }: Props) {
       <div className="flex h-full flex-col items-center justify-center gap-3 text-muted-foreground">
         <p className="font-medium">{app.name}</p>
         <p className="text-xs opacity-60">{app.url}</p>
-        <p className="text-sm text-destructive">Could not load</p>
+        <p className="text-sm text-destructive">{errorReason ?? "Could not load"}</p>
         <button
+          type="button"
           className="rounded bg-muted px-3 py-1 text-sm hover:bg-muted/80"
           onClick={() => {
             setError(false);
+            setErrorReason(null);
             setRetryCount((n) => n + 1);
           }}
         >

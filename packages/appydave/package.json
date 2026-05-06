@@ -21,6 +21,16 @@
       "types": "./src/bridge.ts",
       "import": "./src/bridge.ts",
       "require": "./src/bridge.ts"
+    },
+    "./channels": {
+      "types": "./src/channels.ts",
+      "import": "./src/channels.ts",
+      "require": "./src/channels.ts"
+    },
+    "./channels.js": {
+      "types": "./src/channels.ts",
+      "import": "./src/channels.ts",
+      "require": "./src/channels.ts"
     }
   },
   "scripts": {
