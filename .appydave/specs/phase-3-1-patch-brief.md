@@ -10,12 +10,14 @@
 ## Context (read this first)
 
 AppyCtrl is a fork of `pingdotgg/t3code` (Theo Browne's T3). We maintain **seam discipline**:
+
 - Only specific upstream files may be touched; each gets 1 import + 1 composition line + `[APPYDAVE-PATCH]` annotation
 - All custom code lives in `appydave/` subdirs or `packages/appydave/`
 - Every commit: `bun fmt && bun lint && bun typecheck && bun run test`
 - Run all gates from **repo root** `/Users/davidcruwys/dev/ad/apps/appyctrl` — never `cd apps/web && ...`
 
 Phase 3 shipped the Application launcher click handler:
+
 - `openExternal: true` → `window.desktopBridge.openExternal(url)` (browser)
 - `openExternal: false` → TanStack route `/apps/$id` → `WebviewPane` → `WebContentsView` via IPC
 
@@ -55,6 +57,7 @@ Read `apps/desktop/src/appydave/appyBridge.ts` before editing channels.
 ### Patch A1: Extract channel constants to shared file
 
 Create `packages/appydave/src/channels.ts`:
+
 ```ts
 export const APPY_SHOW_WEBVIEW_CHANNEL = "appy:show-webview";
 export const APPY_HIDE_WEBVIEW_CHANNEL = "appy:hide-webview";
@@ -62,8 +65,13 @@ export const APPY_RESIZE_WEBVIEW_CHANNEL = "appy:resize-webview";
 ```
 
 In `appyIpcHandlers.ts`: replace the 3 local const declarations with:
+
 ```ts
-import { APPY_SHOW_WEBVIEW_CHANNEL, APPY_HIDE_WEBVIEW_CHANNEL, APPY_RESIZE_WEBVIEW_CHANNEL } from "@t3tools/appydave-registry/channels.js";
+import {
+  APPY_SHOW_WEBVIEW_CHANNEL,
+  APPY_HIDE_WEBVIEW_CHANNEL,
+  APPY_RESIZE_WEBVIEW_CHANNEL,
+} from "@t3tools/appydave-registry/channels.js";
 ```
 
 Also update `packages/appydave/package.json` to add `"./channels"` export entry (same pattern as the existing `"./bridge"` entry added in Phase 3).
@@ -71,6 +79,7 @@ Also update `packages/appydave/package.json` to add `"./channels"` export entry 
 ### Patch A2: Store `win` reference in activeViews
 
 Change the Map type and storage:
+
 ```ts
 // Before
 const activeViews = new Map<number, WebContentsView>();
@@ -80,11 +89,13 @@ const activeViews = new Map<number, { view: WebContentsView; win: BrowserWindow 
 ```
 
 In the SHOW handler, after `win.contentView.addChildView(view)`:
+
 ```ts
 activeViews.set(view.webContents.id, { view, win });
 ```
 
 In the HIDE handler, change resolution to use stored win:
+
 ```ts
 // Before
 const win = BrowserWindow.getFocusedWindow() ?? BrowserWindow.getAllWindows()[0];
@@ -98,6 +109,7 @@ view.webContents.close();
 ```
 
 In the RESIZE handler, change to use stored view:
+
 ```ts
 // Before
 const view = activeViews.get(viewId);
@@ -111,6 +123,7 @@ entry?.view.setBounds(bounds);
 ### Patch A3: Clean activeViews on webContents destroy
 
 In the SHOW handler, after `activeViews.set(...)`, add:
+
 ```ts
 view.webContents.once("destroyed", () => {
   activeViews.delete(view.webContents.id);
@@ -120,11 +133,11 @@ view.webContents.once("destroyed", () => {
 ### Patch A4: Dedup guard — one view per URL
 
 In the SHOW handler, after validating `url` and `bounds` (before creating the view), add:
+
 ```ts
 // Check if a view for this URL already exists
 for (const [existingId, { view: existingView }] of activeViews) {
-  if (!existingView.webContents.isDestroyed() &&
-      existingView.webContents.getURL() === url) {
+  if (!existingView.webContents.isDestroyed() && existingView.webContents.getURL() === url) {
     return existingId;
   }
 }
@@ -133,6 +146,7 @@ for (const [existingId, { view: existingView }] of activeViews) {
 ### Patch A5: Validate URL in setWindowOpenHandler (security)
 
 In the SHOW handler's `setWindowOpenHandler`:
+
 ```ts
 // Before
 view.webContents.setWindowOpenHandler(({ url: newUrl }) => {
@@ -180,6 +194,7 @@ Note: rename `_e` to `e` (it IS used — the underscore prefix was wrong).
 ### Patch A7: did-fail-load listener → send error IPC back to renderer
 
 After `void view.webContents.loadURL(url)`, add:
+
 ```ts
 view.webContents.once("did-fail-load", (_e, errorCode, errorDescription) => {
   // Send error back to renderer so WebviewPane can show error UI
@@ -209,6 +224,7 @@ Read each file before editing.
 **File**: `apps/web/src/appydave/apps/WebviewPane.tsx`
 
 In the mount effect bounds calculation:
+
 ```ts
 // Before
 const bounds = {
@@ -235,6 +251,7 @@ Apply the same fix in the ResizeObserver callback (same pattern, same 4 lines).
 **File**: `packages/appydave/src/bridge.ts`
 
 Add to `AppyDesktopBridge` interface:
+
 ```ts
 openInExternalBrowser(url: string): Promise<void>;
 ```
@@ -242,11 +259,13 @@ openInExternalBrowser(url: string): Promise<void>;
 **File**: `apps/desktop/src/appydave/appyBridge.ts`
 
 Add channel constant (or import from channels.ts once Coder-A creates it):
+
 ```ts
 const APPY_OPEN_EXTERNAL_CHANNEL = "appy:open-external";
 ```
 
 Add to the `contextBridge.exposeInMainWorld("appyBridge", {...})` object:
+
 ```ts
 openInExternalBrowser: (url: string) =>
   ipcRenderer.invoke(APPY_OPEN_EXTERNAL_CHANNEL, url),
@@ -255,6 +274,7 @@ openInExternalBrowser: (url: string) =>
 **File**: `apps/desktop/src/appydave/appyIpcHandlers.ts` (coordinate with Coder-A)
 
 Add to `registerAppyIpcHandlers()`:
+
 ```ts
 const APPY_OPEN_EXTERNAL_CHANNEL = "appy:open-external";
 ipcMain.removeHandler(APPY_OPEN_EXTERNAL_CHANNEL);
@@ -274,6 +294,7 @@ Also add `APPY_OPEN_EXTERNAL_CHANNEL` to `packages/appydave/src/channels.ts`.
 Add to the `AppyDesktopBridge` interface call — expose `onWebviewLoadFailed` in bridge:
 
 In `appyBridge.ts`, add:
+
 ```ts
 onWebviewLoadFailed: (listener: (data: { viewId: number; errorCode: number; errorDescription: string }) => void) => {
   const handler = (_event: Electron.IpcRendererEvent, data: unknown) => {
@@ -285,11 +306,13 @@ onWebviewLoadFailed: (listener: (data: { viewId: number; errorCode: number; erro
 ```
 
 Add to `bridge.ts` interface:
+
 ```ts
 onWebviewLoadFailed(listener: (data: { viewId: number; errorCode: number; errorDescription: string }) => void): () => void;
 ```
 
 In `WebviewPane.tsx`, add a third `useEffect` after the viewId is stored:
+
 ```ts
 useEffect(() => {
   if (!window.appyBridge) return;
@@ -306,6 +329,7 @@ useEffect(() => {
 Add `errorReason` state: `const [errorReason, setErrorReason] = useState<string | null>(null);`
 
 Update error UI to show reason:
+
 ```tsx
 <p className="text-sm text-destructive">{errorReason ?? "Could not load"}</p>
 ```
@@ -323,6 +347,7 @@ Read `apps/desktop/src/appydave/externalBrowser.ts` first.
 Check how existing desktop tests are structured — look at any `*.test.ts` file in `apps/desktop/src/` for the import pattern and test runner (Vitest).
 
 Write tests for `validateAppyUrl`:
+
 - Valid `https://` URL → returns normalized href
 - Valid `http://` URL → returns normalized href
 - `file:///etc/passwd` → returns null
@@ -335,6 +360,7 @@ Write tests for `validateAppyUrl`:
 - URL with credentials `https://user:pass@host/` → returns the URL (currently accepted — document the behavior)
 
 Write tests for `parseViewBounds`:
+
 - Valid `{x:0, y:0, width:100, height:100}` → returns object
 - `width: 10` → accepted; `width: 9` → returns null
 - `height: 10` → accepted; `height: 9` → returns null
@@ -353,6 +379,7 @@ Check how existing web component tests are structured — look at any `*.test.ts
 Mock `window.appyBridge` as undefined for the non-Electron fallback tests.
 
 Write tests:
+
 1. **Non-Electron fallback**: when `window.appyBridge` is undefined, renders app name, URL, and explanatory message
 2. **Error state**: when `window.appyBridge.showWebview` resolves to null, renders error panel with "Could not load" and Retry button
 3. **Retry**: clicking Retry button clears error state (verify via re-render)
@@ -407,18 +434,18 @@ git commit -m "fix(appydave): phase-3.1 — Electron lifecycle patches + securit
 
 ## Phase 3.1 ACs (verify before closing)
 
-| # | Verify |
-|---|--------|
-| 1 | Click openExternal=false → embedded view loads, sidebar visible |
-| 2 | Click openExternal=true → opens in browser, main panel unchanged |
-| 3 | Toggle openExternal in modal → next click uses new behaviour |
-| 4 | Unreachable URL → custom error panel with reason + Retry button |
-| 5 | Retry button has type="button" |
-| 6 | On Retina Mac (or simulate 2× DPR): view fills the correct area |
-| 7 | `window.open("javascript:alert(1)")` in DevTools on loaded page → denied, no shell.openExternal |
-| 8 | `window.appyBridge.openInExternalBrowser(url)` exists and works |
-| 9 | check-seams.sh: preload.ts now in SEAM_FILES |
-| 10 | No regression in Phase 2 ACs (modal, add/edit/delete still works) |
+| #   | Verify                                                                                          |
+| --- | ----------------------------------------------------------------------------------------------- |
+| 1   | Click openExternal=false → embedded view loads, sidebar visible                                 |
+| 2   | Click openExternal=true → opens in browser, main panel unchanged                                |
+| 3   | Toggle openExternal in modal → next click uses new behaviour                                    |
+| 4   | Unreachable URL → custom error panel with reason + Retry button                                 |
+| 5   | Retry button has type="button"                                                                  |
+| 6   | On Retina Mac (or simulate 2× DPR): view fills the correct area                                 |
+| 7   | `window.open("javascript:alert(1)")` in DevTools on loaded page → denied, no shell.openExternal |
+| 8   | `window.appyBridge.openInExternalBrowser(url)` exists and works                                 |
+| 9   | check-seams.sh: preload.ts now in SEAM_FILES                                                    |
+| 10  | No regression in Phase 2 ACs (modal, add/edit/delete still works)                               |
 
 ---
 

@@ -82,15 +82,15 @@ When you start a phase, decide topology in this order:
 
 ## Roles
 
-| Role | Subagent kind | When |
-| --- | --- | --- |
-| **Researcher** | Explore (read-only, scoped) | One-shot before fanout. Reports structure of upstream code. |
-| **Planner** | *(usually skipped)* | Only spawn if researcher report is large enough that synthesising the briefs yourself is too much. Phase 2 retro: integrator did this fine. |
-| **Coder** | general-purpose | Each parallel slice. Receives locked contract + file list. |
-| **Reviewer** | general-purpose | *(skipped in conversational mode — UAT does the job)*. Spawn for genuinely risky changes. |
-| **Tester** | general-purpose | *(deferred so far)* — when test surface is non-trivial. |
-| **Integrator (you)** | main thread | Always. Owns seam edits, branch hygiene, contract reconciliation, manifest updates. |
-| **Lisa (KDD librarian)** | agent persona | At phase close. Curates patterns/learnings/decisions. |
+| Role                     | Subagent kind               | When                                                                                                                                        |
+| ------------------------ | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Researcher**           | Explore (read-only, scoped) | One-shot before fanout. Reports structure of upstream code.                                                                                 |
+| **Planner**              | _(usually skipped)_         | Only spawn if researcher report is large enough that synthesising the briefs yourself is too much. Phase 2 retro: integrator did this fine. |
+| **Coder**                | general-purpose             | Each parallel slice. Receives locked contract + file list.                                                                                  |
+| **Reviewer**             | general-purpose             | _(skipped in conversational mode — UAT does the job)_. Spawn for genuinely risky changes.                                                   |
+| **Tester**               | general-purpose             | _(deferred so far)_ — when test surface is non-trivial.                                                                                     |
+| **Integrator (you)**     | main thread                 | Always. Owns seam edits, branch hygiene, contract reconciliation, manifest updates.                                                         |
+| **Lisa (KDD librarian)** | agent persona               | At phase close. Curates patterns/learnings/decisions.                                                                                       |
 
 ---
 
@@ -136,12 +136,12 @@ This block is identical across all coder briefs in the same fanout. Three coders
 
 Add a "Watch out for" section to every coder brief. Phase-2 traps that should be pre-empted in every future brief:
 
-| Trap | Brief instruction |
-| --- | --- |
-| `exactOptionalPropertyTypes` strictness | "Never write `field: foo \|\| undefined`. Use `...(foo ? { field: foo } : {})` for optional fields." |
-| `delete` is a JS reserved word | "If your hook returns a `delete` method, alias internally (`const remove = ...`) and expose as `delete: remove`." |
-| Phantom `.claude-flow/` leakage | "Run gates from repo root, not `cd apps/web && ...`. The `**/.claude-flow/` gitignore catches leaks." |
-| Subagents can't share each other's typecheck output | "If a typecheck error references a sibling slice's file, ignore it — integrator runs final gates." |
+| Trap                                                | Brief instruction                                                                                                 |
+| --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| `exactOptionalPropertyTypes` strictness             | "Never write `field: foo \|\| undefined`. Use `...(foo ? { field: foo } : {})` for optional fields."              |
+| `delete` is a JS reserved word                      | "If your hook returns a `delete` method, alias internally (`const remove = ...`) and expose as `delete: remove`." |
+| Phantom `.claude-flow/` leakage                     | "Run gates from repo root, not `cd apps/web && ...`. The `**/.claude-flow/` gitignore catches leaks."             |
+| Subagents can't share each other's typecheck output | "If a typecheck error references a sibling slice's file, ignore it — integrator runs final gates."                |
 
 ---
 
@@ -171,12 +171,12 @@ Pattern: send the doc agent the Phase N spec **after researcher one-shot lands**
 
 ## Phases shipped (snapshot)
 
-| Phase | Topology | Time-on-clock | KDD entries produced |
-| --- | --- | --- | --- |
-| **0 — setup** | conversational | 30 min | seam-edit-discipline pattern; ADR-0001 (Lisa port) |
-| **1 — light-mode design system** | conversational single-coder | half day (multiple UAT rounds) | theme-token-cascade pattern; @variant dark trap; discover-upstream learning; ADR-0002 (reskin via tokens) |
-| **2 — application launcher** | researcher → 3-way fanout | ~2 hours | contract-lock-fanout pattern; phantom-claude-flow learning; exactOptionalPropertyTypes learning |
-| **3 — webview rendering + external bridge** | researcher → 2-way fanout *(planned)* | est. ~45 min | TBD (likely: webview-primitive ADR, electron-bridge pattern) |
+| Phase                                       | Topology                              | Time-on-clock                  | KDD entries produced                                                                                      |
+| ------------------------------------------- | ------------------------------------- | ------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| **0 — setup**                               | conversational                        | 30 min                         | seam-edit-discipline pattern; ADR-0001 (Lisa port)                                                        |
+| **1 — light-mode design system**            | conversational single-coder           | half day (multiple UAT rounds) | theme-token-cascade pattern; @variant dark trap; discover-upstream learning; ADR-0002 (reskin via tokens) |
+| **2 — application launcher**                | researcher → 3-way fanout             | ~2 hours                       | contract-lock-fanout pattern; phantom-claude-flow learning; exactOptionalPropertyTypes learning           |
+| **3 — webview rendering + external bridge** | researcher → 2-way fanout _(planned)_ | est. ~45 min                   | TBD (likely: webview-primitive ADR, electron-bridge pattern)                                              |
 
 ---
 

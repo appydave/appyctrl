@@ -33,7 +33,7 @@ const viewCache = new Map<string, { view: WebContentsView; win: BrowserWindow }>
 // CORRECT: resolve both together
 ipcMain.handle("appy:show-webview", (event, { url, bounds }) => {
   let entry = viewCache.get(url);
-  
+
   if (!entry) {
     // Create view with security defaults
     const view = new WebContentsView({
@@ -46,7 +46,7 @@ ipcMain.handle("appy:show-webview", (event, { url, bounds }) => {
     entry = { view, win: BrowserWindow.getFocusedWindow()! };
     viewCache.set(url, entry);
   }
-  
+
   const { view, win } = entry;
   win.contentView.addChildView(view);
   view.setBounds(bounds);
@@ -98,16 +98,17 @@ view.webContents.once("destroyed", () => {
 The web renderer's `getBoundingClientRect()` returns **CSS pixels**, not device pixels. On macOS Retina (2×), WebContentsView.setBounds() expects **physical pixels**. Multiply by `window.devicePixelRatio`:
 
 **React component (renderer side):**
+
 ```tsx
 function EmbeddedAppPanel() {
   const containerRef = useRef<HTMLDivElement>(null);
-  
+
   const handleShow = () => {
     if (!containerRef.current) return;
-    
+
     const rect = containerRef.current.getBoundingClientRect();
     const dpr = window.devicePixelRatio;
-    
+
     // Send physical pixels to main process
     window.appyBridge.showWebview({
       url: "https://embedded-app.example.com",
@@ -119,12 +120,13 @@ function EmbeddedAppPanel() {
       },
     });
   };
-  
+
   return <div ref={containerRef} />;
 }
 ```
 
 **Main process:**
+
 ```ts
 ipcMain.handle("appy:show-webview", (event, { url, bounds }) => {
   // bounds are already in physical pixels — use directly
@@ -141,7 +143,7 @@ Check if an identical URL already has a live view in the Map:
 ```ts
 ipcMain.handle("appy:show-webview", (event, { url, bounds }) => {
   let entry = viewCache.get(url);
-  
+
   if (entry) {
     // URL already loaded — just update bounds and bring to front
     const { view, win } = entry;
@@ -151,7 +153,7 @@ ipcMain.handle("appy:show-webview", (event, { url, bounds }) => {
     view.setBounds(bounds); // in case the container resized
     return;
   }
-  
+
   // First time — create new view
   const view = new WebContentsView({...});
   // ... rest of creation logic
@@ -167,12 +169,12 @@ ipcMain.handle("appy:show-webview", (event, { url, bounds }) => {
 ```ts
 ipcMain.handle("appy:show-webview", (event, { url, bounds }) => {
   const view = new WebContentsView({...});
-  
+
   // Validate app URL
   if (!isValidAppUrl(url)) {
     throw new Error(`Invalid app URL: ${url}`);
   }
-  
+
   view.webContents.setWindowOpenHandler(({ url: popupUrl }) => {
     // ✓ Validate popup URL too — user could have typed into browser console
     if (isValidAppUrl(popupUrl)) {
@@ -182,7 +184,7 @@ ipcMain.handle("appy:show-webview", (event, { url, bounds }) => {
     // Deny file://, javascript:, or other dangerous schemes
     return { action: "deny" };
   });
-  
+
   view.webContents.on("will-navigate", (event, url) => {
     // ✓ Same validation for navigation
     if (!isValidAppUrl(url)) {

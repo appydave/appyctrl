@@ -8,7 +8,7 @@ category: learnings
 tags: [electron, security, shell, ipc, webcontentsview, url-validation]
 kdd_phase_origin: "phase-3"
 kdd_error_signatures:
-  - "loaded page calls window.open(\"file:///...\")"
+  - 'loaded page calls window.open("file:///...")'
   - "javascript: scheme in window.open() executed by shell.openExternal"
   - "user controlled URL passed directly to system"
   - "privilege escalation from web payload"
@@ -32,13 +32,14 @@ A malicious or compromised embedded app can call:
 
 ```javascript
 // In the loaded app's JS
-window.open("file:///etc/passwd");          // ✗ Opens local file in editor
-window.open("javascript:alert('xss')");     // ✗ Executes JS in the browser
-window.open("mailto:attacker@evil.com");    // ✗ Composes email with crafted body
-window.open("file:///Applications/...");    // ✗ Opens admin tools
+window.open("file:///etc/passwd"); // ✗ Opens local file in editor
+window.open("javascript:alert('xss')"); // ✗ Executes JS in the browser
+window.open("mailto:attacker@evil.com"); // ✗ Composes email with crafted body
+window.open("file:///Applications/..."); // ✗ Opens admin tools
 ```
 
 Without validation, `shell.openExternal` will:
+
 - For `file://`: open the file in the default app (editor, PDF viewer, etc.)
 - For `javascript:`: pass to the system browser, which may execute it
 - For `mailto:`: open email client and populate fields
@@ -66,17 +67,17 @@ const ALLOWED_DOMAINS = [
 function isValidAppUrl(urlString: string): boolean {
   try {
     const parsed = new URL(urlString);
-    
+
     // Only allow http and https
     if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
       return false;
     }
-    
+
     // Check against domain allowlist
     if (!ALLOWED_DOMAINS.includes(parsed.hostname)) {
       return false;
     }
-    
+
     return true;
   } catch {
     // new URL() threw — invalid syntax
@@ -86,12 +87,12 @@ function isValidAppUrl(urlString: string): boolean {
 
 ipcMain.handle("appy:show-webview", (event, { url, bounds }) => {
   const view = new WebContentsView({...});
-  
+
   // Validate the primary app URL
   if (!isValidAppUrl(url)) {
     throw new Error(`Invalid app URL: ${url}`);
   }
-  
+
   // Handle new windows (target="_blank") from the loaded app
   view.webContents.setWindowOpenHandler(({ url: popupUrl }) => {
     if (isValidAppUrl(popupUrl)) {
@@ -99,12 +100,12 @@ ipcMain.handle("appy:show-webview", (event, { url, bounds }) => {
       shell.openExternal(popupUrl);
       return { action: "deny" }; // deny the in-webview window
     }
-    
+
     // ✗ Deny: wrong scheme, wrong domain, or invalid syntax
     console.warn(`Blocked unsafe popup URL: ${popupUrl}`);
     return { action: "deny" };
   });
-  
+
   // Handle navigation within the view (e.g., <a href="...">)
   view.webContents.on("will-navigate", (event, navigationUrl) => {
     if (!isValidAppUrl(navigationUrl)) {
@@ -112,7 +113,7 @@ ipcMain.handle("appy:show-webview", (event, { url, bounds }) => {
       console.warn(`Blocked unsafe navigation: ${navigationUrl}`);
     }
   });
-  
+
   view.webContents.loadURL(url);
 });
 ```

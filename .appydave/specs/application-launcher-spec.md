@@ -125,11 +125,11 @@ Built on shadcn `Dialog`. Used in add and edit modes.
 
 **Webview primitive choice.** Three Electron options for embedding remote content in the main panel:
 
-| Primitive | DOM-mounted? | Positioning | Status |
-| --- | --- | --- | --- |
-| `<webview>` tag | yes — inside React tree | flexbox-natural | **deprecated** (Electron docs) — security caveats, future removal |
-| `BrowserView` | no — overlay positioned from main process | absolute bounds via IPC | legacy; superseded |
-| `WebContentsView` | no — same overlay model | bounds via IPC | **modern** (Electron 30+); official replacement for BrowserView |
+| Primitive         | DOM-mounted?                              | Positioning             | Status                                                            |
+| ----------------- | ----------------------------------------- | ----------------------- | ----------------------------------------------------------------- |
+| `<webview>` tag   | yes — inside React tree                   | flexbox-natural         | **deprecated** (Electron docs) — security caveats, future removal |
+| `BrowserView`     | no — overlay positioned from main process | absolute bounds via IPC | legacy; superseded                                                |
+| `WebContentsView` | no — same overlay model                   | bounds via IPC          | **modern** (Electron 30+); official replacement for BrowserView   |
 
 Researcher one-shot must investigate whether t3code already imports any of these primitives (likely for diff/terminal panes). If t3code commits to one, we follow that precedent. Otherwise default: **`WebContentsView`** for future-proofing, accepting the bounds-sync complexity. Decision recorded as Phase 3 ADR before fanout.
 

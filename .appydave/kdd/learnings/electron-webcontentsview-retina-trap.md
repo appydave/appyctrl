@@ -39,12 +39,14 @@ What unblocked me: **checked the Retina display settings** (System Preferences �
 ## Root cause
 
 `getBoundingClientRect()` returns the bounding box in **CSS pixels** — the logical coordinate space that the DOM renderer uses. On a 2× Retina display:
+
 - CSS pixel = 1 unit in the DOM
 - Device pixel = 2× the physical hardware pixels
 
 `WebContentsView.setBounds()` on macOS takes **device pixels** (physical coordinates for the Electron window's content view). Without converting CSS pixels to device pixels, the bounds are off by a factor of 2 in each dimension — resulting in 25% area (0.5 × 0.5) and positioned at the wrong corner.
 
 Example:
+
 ```
 Container width in CSS: 800px
 getBoundingClientRect(): { width: 800 }
@@ -59,13 +61,14 @@ Without the multiplier, `setBounds({ width: 800 })` renders an 800-device-pixel 
 Multiply all bounds values by `window.devicePixelRatio` before sending to the main process:
 
 **Before (broken on Retina):**
+
 ```tsx
 const rect = containerRef.current.getBoundingClientRect();
 window.appyBridge.showWebview({
   url: appUrl,
   bounds: {
-    x: rect.left,      // ✗ CSS pixels
-    y: rect.top,       // ✗ CSS pixels
+    x: rect.left, // ✗ CSS pixels
+    y: rect.top, // ✗ CSS pixels
     width: rect.width, // ✗ CSS pixels
     height: rect.height, // ✗ CSS pixels
   },
@@ -73,15 +76,16 @@ window.appyBridge.showWebview({
 ```
 
 **After (works on Retina and non-Retina):**
+
 ```tsx
 const rect = containerRef.current.getBoundingClientRect();
 const dpr = window.devicePixelRatio;
 window.appyBridge.showWebview({
   url: appUrl,
   bounds: {
-    x: Math.round(rect.left * dpr),       // ✓ device pixels
-    y: Math.round(rect.top * dpr),        // ✓ device pixels
-    width: Math.round(rect.width * dpr),  // ✓ device pixels
+    x: Math.round(rect.left * dpr), // ✓ device pixels
+    y: Math.round(rect.top * dpr), // ✓ device pixels
+    width: Math.round(rect.width * dpr), // ✓ device pixels
     height: Math.round(rect.height * dpr), // ✓ device pixels
   },
 });
@@ -92,6 +96,7 @@ Note: `Math.round()` is required — floating-point device pixels cause unexpect
 ## How long this took
 
 About 4 hours across two UAT sessions:
+
 1. Initial observation on Retina MacBook (1 hour)
 2. Hypothesis testing on Simulator (1× — no issue, incorrectly dismissed as environment-specific)
 3. Manual 2× scaling tests (1.5 hours)
@@ -102,6 +107,7 @@ The key breakthrough was testing on the actual Retina hardware and checking syst
 ## Applicability
 
 This affects **any Electron API that takes pixel coordinates** and is called from web-renderer code:
+
 - `WebContentsView.setBounds()`
 - `BrowserView.setBounds()` (deprecated but same issue)
 - Any custom bounds passed to native code via IPC
@@ -109,6 +115,7 @@ This affects **any Electron API that takes pixel coordinates** and is called fro
 ## Prevention
 
 In code review or testing checklist:
+
 - [ ] If bounds come from `getBoundingClientRect()` or similar DOM API, apply `window.devicePixelRatio` multiplier
 - [ ] Test on a Retina display (or use device emulation in DevTools)
 - [ ] Log the final bounds values to confirm the multiplier was applied

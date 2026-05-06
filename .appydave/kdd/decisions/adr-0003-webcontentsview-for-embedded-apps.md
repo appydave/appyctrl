@@ -14,11 +14,11 @@ Phase 3 adds a click handler to the Application launcher sidebar. Apps with
 `openExternal: false` must render inside the Electron window (main panel). Three
 primitives exist:
 
-| Primitive | Status in Electron 40.9.3 |
-|-----------|--------------------------|
+| Primitive            | Status in Electron 40.9.3                                                                        |
+| -------------------- | ------------------------------------------------------------------------------------------------ |
 | `<webview>` HTML tag | Deprecated, requires `webviewTag: true` in webPreferences, security warts, scheduled for removal |
-| `BrowserView` | Deprecated since Electron 30, replaced by WebContentsView |
-| `WebContentsView` | Current recommended API (stable since Electron 28) |
+| `BrowserView`        | Deprecated since Electron 30, replaced by WebContentsView                                        |
+| `WebContentsView`    | Current recommended API (stable since Electron 28)                                               |
 
 Researcher one-shot confirmed: **no existing webview usage** in this codebase. Electron
 version is 40.9.3. Zero migration cost to pick WebContentsView.
@@ -33,7 +33,7 @@ version is 40.9.3. Zero migration cost to pick WebContentsView.
 
 ## External browser path
 
-`openExternal: true` reuses the **existing** `OPEN_EXTERNAL_CHANNEL` / `desktopBridge.openExternal()` 
+`openExternal: true` reuses the **existing** `OPEN_EXTERNAL_CHANNEL` / `desktopBridge.openExternal()`
 already present in `preload.ts:119`. No new IPC channel needed for this path.
 `window.appyBridge` is only needed for the embedded (WebContentsView) path.
 

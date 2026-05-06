@@ -9,35 +9,36 @@
 
 ## Required Patches (P1–P10)
 
-| # | Patch | Severity | File(s) |
-|---|-------|----------|---------|
-| P1 | Validate URL in `setWindowOpenHandler` before `shell.openExternal` | Critical/Security | `appyIpcHandlers.ts` |
-| P2 | Multiply bounds by `window.devicePixelRatio` (Retina fix) | Critical/Visual | `WebviewPane.tsx` |
-| P3 | `webContents.once("destroyed")` to clean `activeViews` | Critical/Memory | `appyIpcHandlers.ts` |
-| P4 | Store `win` reference in `activeViews` at show-time; use at hide-time | Critical/Crash | `appyIpcHandlers.ts` |
-| P5 | Dedup guard in SHOW handler — one view per URL | Critical/Memory | `appyIpcHandlers.ts` |
-| P6 | Add `openInExternalBrowser` to `appyBridge` OR update spec (AC-8 mismatch) | Critical/Contract | `bridge.ts`, `appyBridge.ts` |
-| P7 | `did-fail-load` listener → IPC back to renderer for error UI | High/UX | `appyIpcHandlers.ts`, `WebviewPane.tsx` |
-| P8 | `try/catch` around `new URL()` in `will-navigate` handler | High/Crash | `appyIpcHandlers.ts` |
-| P9 | Extract channel constants to `packages/appydave/src/channels.ts` | High/Maintenance | `appyBridge.ts`, `appyIpcHandlers.ts` |
-| P10 | `externalBrowser.test.ts` — pure function coverage (security gate) | High/Security | new file |
+| #   | Patch                                                                      | Severity          | File(s)                                 |
+| --- | -------------------------------------------------------------------------- | ----------------- | --------------------------------------- |
+| P1  | Validate URL in `setWindowOpenHandler` before `shell.openExternal`         | Critical/Security | `appyIpcHandlers.ts`                    |
+| P2  | Multiply bounds by `window.devicePixelRatio` (Retina fix)                  | Critical/Visual   | `WebviewPane.tsx`                       |
+| P3  | `webContents.once("destroyed")` to clean `activeViews`                     | Critical/Memory   | `appyIpcHandlers.ts`                    |
+| P4  | Store `win` reference in `activeViews` at show-time; use at hide-time      | Critical/Crash    | `appyIpcHandlers.ts`                    |
+| P5  | Dedup guard in SHOW handler — one view per URL                             | Critical/Memory   | `appyIpcHandlers.ts`                    |
+| P6  | Add `openInExternalBrowser` to `appyBridge` OR update spec (AC-8 mismatch) | Critical/Contract | `bridge.ts`, `appyBridge.ts`            |
+| P7  | `did-fail-load` listener → IPC back to renderer for error UI               | High/UX           | `appyIpcHandlers.ts`, `WebviewPane.tsx` |
+| P8  | `try/catch` around `new URL()` in `will-navigate` handler                  | High/Crash        | `appyIpcHandlers.ts`                    |
+| P9  | Extract channel constants to `packages/appydave/src/channels.ts`           | High/Maintenance  | `appyBridge.ts`, `appyIpcHandlers.ts`   |
+| P10 | `externalBrowser.test.ts` — pure function coverage (security gate)         | High/Security     | new file                                |
 
 ## Medium Patches
 
-| Issue | Fix |
-|-------|-----|
-| `_e.preventDefault()` on event named `_e` | Rename to `e` |
-| Error state "Could not load" has no reason | Pass reason string through error state |
-| Retry button missing `type="button"` | Add attribute |
-| `preload.ts` not in `check-seams.sh` SEAM_FILES | Add to array |
-| `[APPYDAVE-PATCH]` on AppyDave-owned `AppyAppsSection.tsx` | Remove annotation, add plain comment |
-| No explicit `partition: "persist:..."` on WebContentsView | Add `partition: \`persist:appydave-app-${id}\`` |
-| `void navigate()` swallows errors | Add `.catch(console.error)` in dev |
-| ViewBounds inline return type in `externalBrowser.ts` | Import `ViewBounds` from `bridge.ts` |
+| Issue                                                      | Fix                                             |
+| ---------------------------------------------------------- | ----------------------------------------------- |
+| `_e.preventDefault()` on event named `_e`                  | Rename to `e`                                   |
+| Error state "Could not load" has no reason                 | Pass reason string through error state          |
+| Retry button missing `type="button"`                       | Add attribute                                   |
+| `preload.ts` not in `check-seams.sh` SEAM_FILES            | Add to array                                    |
+| `[APPYDAVE-PATCH]` on AppyDave-owned `AppyAppsSection.tsx` | Remove annotation, add plain comment            |
+| No explicit `partition: "persist:..."` on WebContentsView  | Add `partition: \`persist:appydave-app-${id}\`` |
+| `void navigate()` swallows errors                          | Add `.catch(console.error)` in dev              |
+| ViewBounds inline return type in `externalBrowser.ts`      | Import `ViewBounds` from `bridge.ts`            |
 
 ## Findings Index
 
 ### Critical (must fix — reject class)
+
 - DVR-BH-001: `activeViews` never cleaned on external webContents destroy
 - DVR-BH-002: Wrong window for `removeChildView` under focus change
 - DVR-BH-003: Ghost webview on retry race (double view stacking)
@@ -48,6 +49,7 @@
 - DVR-AA-001: AC-8 contract mismatch — `openInExternalBrowser` does not exist
 
 ### High
+
 - DVR-BH-004: `close()` called before `removeChildView` when win is null
 - DVR-BH-006: SSRF via http:// to private IPs (no blocklist)
 - DVR-BH-007: `will-navigate` misses SPA in-page navigation
@@ -72,6 +74,7 @@
 ## Next step
 
 Phase 3.1 patch session — 2-way coder fanout:
+
 - **Coder-A**: `appyIpcHandlers.ts` (P1, P3, P4, P5, P7, P8, P9)
 - **Coder-B**: `WebviewPane.tsx` (P2), `bridge.ts` + `appyBridge.ts` (P6), medium CQ fixes
 - **Coder-C**: `externalBrowser.test.ts` (P10), component tests (UT-003–006)

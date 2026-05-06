@@ -76,11 +76,11 @@ edits, re-apply the three colour-class swaps.
 
 ### splash-appy-logo `seam`
 
-|                     |                                                            |
-| ------------------- | ---------------------------------------------------------- |
-| **Files**           | `apps/web/src/routes/__root.tsx`                           |
-| **Added**           | 2026-05-06 (phase-2 polish)                                |
-| **Upstream status** | N/A — AppyDave-owned brand                                 |
+|                     |                                  |
+| ------------------- | -------------------------------- |
+| **Files**           | `apps/web/src/routes/__root.tsx` |
+| **Added**           | 2026-05-06 (phase-2 polish)      |
+| **Upstream status** | N/A — AppyDave-owned brand       |
 
 Co-located with the existing `splash-pending` patch on `__root.tsx`. The
 `pendingComponent` for the root route now points to `AppySplashScreen` (lives at
@@ -208,11 +208,11 @@ the same root route definition block.
 
 ### appydave-preload `seam`
 
-|                     |                                               |
-| ------------------- | --------------------------------------------- |
-| **Files**           | `apps/desktop/src/preload.ts`                 |
-| **Added**           | 2026-05-06 (phase-3)                          |
-| **Upstream status** | N/A — AppyDave-owned extension                |
+|                     |                                |
+| ------------------- | ------------------------------ |
+| **Files**           | `apps/desktop/src/preload.ts`  |
+| **Added**           | 2026-05-06 (phase-3)           |
+| **Upstream status** | N/A — AppyDave-owned extension |
 
 Import + call of `registerAppyBridge()` added after the upstream `contextBridge.exposeInMainWorld("desktopBridge", {...})` block. Exposes `window.appyBridge` with three methods: `showWebview`, `hideWebview`, `resizeWebview` — the IPC surface for the embedded WebContentsView launcher.
 
@@ -220,11 +220,11 @@ Import + call of `registerAppyBridge()` added after the upstream `contextBridge.
 
 ### bridge-open-external `seam`
 
-|                     |                                                                 |
-| ------------------- | --------------------------------------------------------------- |
-| **Files**           | `apps/desktop/src/main.ts`                                      |
-| **Added**           | 2026-05-06 (phase-3)                                            |
-| **Upstream status** | N/A — AppyDave-owned feature                                    |
+|                     |                              |
+| ------------------- | ---------------------------- |
+| **Files**           | `apps/desktop/src/main.ts`   |
+| **Added**           | 2026-05-06 (phase-3)         |
+| **Upstream status** | N/A — AppyDave-owned feature |
 
 One import (`registerAppyIpcHandlers`) + one call inside `registerIpcHandlers()`. Registers the three `appy:*` IPC channels for WebContentsView lifecycle management. External-browser path (`openExternal: true`) reuses upstream's existing `desktop:open-external` channel without modification.
 
@@ -232,11 +232,11 @@ One import (`registerAppyIpcHandlers`) + one call inside `registerIpcHandlers()`
 
 ### apps-section-activate `seam`
 
-|                     |                                                               |
-| ------------------- | ------------------------------------------------------------- |
-| **Files**           | `apps/web/src/appydave/apps/AppyAppsSection.tsx`              |
-| **Added**           | 2026-05-06 (phase-3)                                          |
-| **Upstream status** | N/A — AppyDave-owned feature                                  |
+|                     |                                                  |
+| ------------------- | ------------------------------------------------ |
+| **Files**           | `apps/web/src/appydave/apps/AppyAppsSection.tsx` |
+| **Added**           | 2026-05-06 (phase-3)                             |
+| **Upstream status** | N/A — AppyDave-owned feature                     |
 
 `handleActivate` wired from no-op to: `openExternal: true` → `window.desktopBridge?.openExternal(url)` (reuses upstream IPC); `openExternal: false` → TanStack `navigate({ to: "/apps/$id", params: { id } })` which renders `WebviewPane` in the main panel.
 

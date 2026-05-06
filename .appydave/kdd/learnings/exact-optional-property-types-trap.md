@@ -28,7 +28,7 @@ const app: RegisteredApp = {
   id,
   name,
   url,
-  glyph: glyph || undefined,   // <-- error here
+  glyph: glyph || undefined, // <-- error here
   openExternal,
 };
 ```
@@ -87,12 +87,12 @@ For destructuring + reassignment patterns:
 // ❌ Wrong
 function update(patch: Partial<RegisteredApp>) {
   const { glyph: newGlyph, ...rest } = patch;
-  return { ...current, ...rest, glyph: newGlyph };  // glyph: undefined possible
+  return { ...current, ...rest, glyph: newGlyph }; // glyph: undefined possible
 }
 
 // ✅ Right
 function update(patch: Partial<RegisteredApp>) {
-  return { ...current, ...patch };  // spread skips undefined keys
+  return { ...current, ...patch }; // spread skips undefined keys
 }
 ```
 

@@ -41,7 +41,13 @@ Example fragment from Phase 2's coder-2 brief:
 ```ts
 // Locked contracts (do not change — coder-1 owns the data layer with these signatures)
 
-type RegisteredApp = { id: string; name: string; url: string; glyph?: string; openExternal: boolean };
+type RegisteredApp = {
+  id: string;
+  name: string;
+  url: string;
+  glyph?: string;
+  openExternal: boolean;
+};
 
 function useAppRegistry(): {
   apps: ReadonlyArray<RegisteredApp>;
@@ -93,7 +99,7 @@ In Phase 2 with 3 parallel coders writing 7 files across 2 packages, integration
 
 ## Phases Shipped
 
-| Phase | Application | Outcome | Integration Rework |
-|-------|-------------|---------|-------------------|
-| phase-2 | App registry (3 coders, 7 files, 2 packages) | Locked contracts before fanout, zero shape drift | Zero rework — one content edit (console.log removal) |
-| phase-3 | Desktop bridge + web webview (researcher + 2 coders) | ADR-0003 locked by researcher one-shot before fanout, types codified in briefs | Zero integration rework |
+| Phase   | Application                                          | Outcome                                                                        | Integration Rework                                   |
+| ------- | ---------------------------------------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------- |
+| phase-2 | App registry (3 coders, 7 files, 2 packages)         | Locked contracts before fanout, zero shape drift                               | Zero rework — one content edit (console.log removal) |
+| phase-3 | Desktop bridge + web webview (researcher + 2 coders) | ADR-0003 locked by researcher one-shot before fanout, types codified in briefs | Zero integration rework                              |

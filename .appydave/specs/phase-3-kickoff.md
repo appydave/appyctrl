@@ -112,18 +112,18 @@ That's the entire contract surface. Coder-A implements; coder-B (and the integra
 
 ## Acceptance criteria (10)
 
-| # | AC |
-| --- | --- |
-| 1 | Click `openExternal=false` row → main panel renders the webview at `/apps/$id`; sidebar stays put |
-| 2 | Click `openExternal=true` row → URL handed to `shell.openExternal()`; main panel does not change |
-| 3 | Toggle `openExternal` in modal → next click on that row uses new behaviour without app restart |
-| 4 | Session/cookie persistence across app switches and Electron restarts (verifiable in devtools) |
-| 5 | In-webview navigation policy: same-origin links navigate inside; `target="_blank"` routes to `shell.openExternal()` |
-| 6 | Error UI: unreachable URL → fallback panel with app name + URL + reason + Retry button |
-| 7 | CSP / sandbox: `nodeIntegration: false`, `contextIsolation: true`, no remote module |
-| 8 | Bridge contract: `window.appyBridge.openInExternalBrowser(url)` exposed via preload, IPC handled in main |
-| 9 | `check-seams.sh` reports `bridge-open-external` patch annotated and in manifest |
-| 10 | No regression in Phase 2 ACs |
+| #   | AC                                                                                                                  |
+| --- | ------------------------------------------------------------------------------------------------------------------- |
+| 1   | Click `openExternal=false` row → main panel renders the webview at `/apps/$id`; sidebar stays put                   |
+| 2   | Click `openExternal=true` row → URL handed to `shell.openExternal()`; main panel does not change                    |
+| 3   | Toggle `openExternal` in modal → next click on that row uses new behaviour without app restart                      |
+| 4   | Session/cookie persistence across app switches and Electron restarts (verifiable in devtools)                       |
+| 5   | In-webview navigation policy: same-origin links navigate inside; `target="_blank"` routes to `shell.openExternal()` |
+| 6   | Error UI: unreachable URL → fallback panel with app name + URL + reason + Retry button                              |
+| 7   | CSP / sandbox: `nodeIntegration: false`, `contextIsolation: true`, no remote module                                 |
+| 8   | Bridge contract: `window.appyBridge.openInExternalBrowser(url)` exposed via preload, IPC handled in main            |
+| 9   | `check-seams.sh` reports `bridge-open-external` patch annotated and in manifest                                     |
+| 10  | No regression in Phase 2 ACs                                                                                        |
 
 ---
 
@@ -131,10 +131,10 @@ That's the entire contract surface. Coder-A implements; coder-B (and the integra
 
 Documentation agent flagged two gaps in the prior Phase 3 spec. Both addressed before fanout starts:
 
-| Gap | Risk | Resolution |
-| --- | --- | --- |
-| **Webview primitive deprecated** — spec said `<webview>`, which Electron has marked deprecated. Cold subagents would have shipped it. | high — security warts + future removal | Researcher one-shot now investigates t3code precedent + decides between `<webview>` / `BrowserView` / `WebContentsView`. Decision recorded as Phase 3 ADR before fanout. |
-| **Thin ACs** — Phase 2 had 8, Phase 3 had 6 and missed session persistence, in-webview navigation, error UI, CSP posture. | medium — subagents would have shipped reasonable defaults but not THE defaults | Spec ACs expanded from 6 to 10. New ACs: session/cookie partition, in-webview navigation policy, error UI shape, CSP/sandbox posture, explicit bridge contract. |
+| Gap                                                                                                                                   | Risk                                                                           | Resolution                                                                                                                                                               |
+| ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Webview primitive deprecated** — spec said `<webview>`, which Electron has marked deprecated. Cold subagents would have shipped it. | high — security warts + future removal                                         | Researcher one-shot now investigates t3code precedent + decides between `<webview>` / `BrowserView` / `WebContentsView`. Decision recorded as Phase 3 ADR before fanout. |
+| **Thin ACs** — Phase 2 had 8, Phase 3 had 6 and missed session persistence, in-webview navigation, error UI, CSP posture.             | medium — subagents would have shipped reasonable defaults but not THE defaults | Spec ACs expanded from 6 to 10. New ACs: session/cookie partition, in-webview navigation policy, error UI shape, CSP/sandbox posture, explicit bridge contract.          |
 
 The doc agent's third proposal — split into "Design 09 (this phase)" and "Design 10 (cross-phase swarm playbook)" — actioned: see `.appydave/kdd/meta/swarm-playbook.md`.
 
@@ -148,7 +148,7 @@ After researcher one-shot lands and the webview-primitive ADR is written, send b
 - Phase 3 implementation diff once it lands
 - Swarm playbook draft (Design 10) for review pass
 
-This closes the doc-agent feedback loop *before* code commits, not after.
+This closes the doc-agent feedback loop _before_ code commits, not after.
 
 ---
 
@@ -174,17 +174,20 @@ Both coder briefs include this verbatim block:
 ## Files to be created or touched
 
 ### Coder-A — desktop bridge
+
 - ➕ `packages/appydave/src/bridge.ts`
 - ➕ `apps/desktop/src/appydave/appyBridge.ts`
 - ➕ `apps/desktop/src/appydave/externalBrowser.ts`
-- ✏️ `apps/desktop/src/main.ts` *(seam edit, 1 import + 1 IPC handler line, annotated `[APPYDAVE-PATCH id="bridge-open-external"]`)*
+- ✏️ `apps/desktop/src/main.ts` _(seam edit, 1 import + 1 IPC handler line, annotated `[APPYDAVE-PATCH id="bridge-open-external"]`)_
 
 ### Coder-B — web webview pane
-- ➕ `apps/web/src/routes/apps.$id.tsx` *(TanStack auto-discovery, no seam edit)*
+
+- ➕ `apps/web/src/routes/apps.$id.tsx` _(TanStack auto-discovery, no seam edit)_
 - ➕ `apps/web/src/appydave/apps/WebviewPane.tsx`
 
 ### Integrator — wire-up
-- ✏️ `apps/web/src/appydave/apps/AppyAppsSection.tsx` *(`handleActivate` no-op → branch on `app.openExternal`)*
+
+- ✏️ `apps/web/src/appydave/apps/AppyAppsSection.tsx` _(`handleActivate` no-op → branch on `app.openExternal`)_
 
 ---
 
