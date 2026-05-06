@@ -84,6 +84,8 @@ import { isArm64HostRunningIntelBuild, resolveDesktopRuntimeInfo } from "./runti
 import { resolveDesktopAppBranding } from "./appBranding.ts";
 import { bindFirstRevealTrigger, type RevealSubscription } from "./windowReveal.ts";
 import { resolveTailscaleAdvertisedEndpoints } from "./tailscaleEndpointProvider.ts";
+// [APPYDAVE-PATCH id="bridge-open-external" type="seam" added="2026-05-06"]
+import { registerAppyIpcHandlers } from "./appydave/appyIpcHandlers.js";
 
 syncShellEnvironment();
 
@@ -1979,6 +1981,8 @@ function registerIpcHandlers(): void {
       state: updateState,
     } satisfies DesktopUpdateCheckResult;
   });
+
+  registerAppyIpcHandlers();
 }
 
 function getIconOption(): { icon: string } | Record<string, never> {
