@@ -90,3 +90,10 @@ In Phase 2 with 3 parallel coders writing 7 files across 2 packages, integration
 
 - Learnings: [exactOptionalPropertyTypes trap](../learnings/exact-optional-property-types-trap.md) — a TS-strictness gotcha that two coders independently ran into; codifying it in briefs would prevent it
 - Patterns: [seam-edit-discipline](seam-edit-discipline.md)
+
+## Phases Shipped
+
+| Phase | Application | Outcome | Integration Rework |
+|-------|-------------|---------|-------------------|
+| phase-2 | App registry (3 coders, 7 files, 2 packages) | Locked contracts before fanout, zero shape drift | Zero rework — one content edit (console.log removal) |
+| phase-3 | Desktop bridge + web webview (researcher + 2 coders) | ADR-0003 locked by researcher one-shot before fanout, types codified in briefs | Zero integration rework |

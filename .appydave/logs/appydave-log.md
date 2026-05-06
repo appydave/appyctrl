@@ -62,3 +62,89 @@ Three demo-worthy moments in the appyctrl story:
 | Branding + color | planned     | Blocked on design brief. Wordmark, brand.css token overrides, favicon |
 | Apps launcher    | planned     | Left sidebar, app registry, Chromium window launcher                  |
 | Upgrade button   | planned     | WS RPC + Claude Code agent flow for conversational upstream sync      |
+
+---
+
+## 2026-05-05 — Phase 1 (Branding + Color System)
+
+### What we built
+
+| Feature | Status | Files | Notes |
+| --- | --- | --- | --- |
+| AppyDave theme tokens | shipped | `apps/web/src/appydave/themes/themes.css` | `:root` warm cream light + `:root.dark` warm dark; `--ac-status-*` tokens for all pill colors |
+| AppyCtrlWordmark | shipped | `apps/web/src/appydave/AppyCtrlWordmark.tsx` | Two-color wordmark using `--appy-wordmark-appy` / `--appy-wordmark-ctrl` CSS vars |
+| Sidebar wordmark swap | shipped | `apps/web/src/components/Sidebar.tsx` | Seam: `<AppyCtrlWordmark />` replaces upstream T3 branding |
+| Status pill color reskin | shipped | `apps/web/src/components/Sidebar.logic.ts` | `text-[var(--ac-status-working)]` etc. — terracotta/amber/green palette |
+| PlanSidebar color reskin | shipped | `apps/web/src/components/PlanSidebar.tsx` | Step icons + plan badge use status tokens |
+| Theme CSS seam | shipped | `apps/web/src/main.tsx` | `import "./appydave/themes/themes.css"` |
+
+### Deferred (Phase 1.5)
+
+| Feature | Status | Files | Notes |
+| --- | --- | --- | --- |
+| 4 hardcoded-palette patches | deferred | TBD | Composer pending-input selection, model star, diff error text, chat composer plan-toggle — still using raw Tailwind palette |
+
+### Key learnings captured (Lisa)
+
+- `@variant dark` silently does nothing in plain CSS files — use explicit `:root.dark {}` selector
+- Discover upstream systems before building parallel ones (grep first)
+
+---
+
+## 2026-05-06 — Phase 2 (Application Launcher — data + sidebar UI + modal)
+
+### What we built
+
+| Feature | Status | Files | Notes |
+| --- | --- | --- | --- |
+| `@t3tools/appydave-registry` package | shipped | `packages/appydave/src/registry.ts`, `package.json` | `RegisteredApp` type, storage helpers, validators, 2 seeded apps |
+| `useAppRegistry` hook | shipped | `apps/web/src/appydave/apps/useAppRegistry.ts` | add/update/delete/getById, localStorage + cross-tab sync |
+| `AppyAppsSection` | shipped | `apps/web/src/appydave/apps/AppyAppsSection.tsx` | Sidebar Applications section, header + add button + row list + modal |
+| `AppyAppRow` | shipped | `apps/web/src/appydave/apps/AppyAppRow.tsx` | SidebarMenuItem with showOnHover edit action |
+| `AppyAppModal` | shipped | `apps/web/src/appydave/apps/AppyAppModal.tsx` | shadcn Dialog — glyph/name/url/openExternal, URL validation, inline delete confirm |
+| AppySplashScreen | shipped | `apps/web/src/appydave/AppySplashScreen.tsx` | AppyDave logo + AppyCtrlWordmark on bg-background |
+| Sidebar seam (apps section) | shipped | `apps/web/src/components/Sidebar.tsx` | `<AppyAppsSection />` mounted between Projects and SidebarContent close |
+| Splash seam | shipped | `apps/web/src/routes/__root.tsx` | `pendingComponent: AppySplashScreen` |
+
+### Key learnings captured (Lisa)
+
+- Contract-lock fanout: lock TypeScript contracts verbatim in planner briefs before parallel fanout
+- Phantom `.claude-flow/` leakage: subagents must run gates from repo root, not `cd apps/web`
+- `exactOptionalPropertyTypes` trap: use `...(val ? {field: val} : {})` not `field: val || undefined`
+
+---
+
+## 2026-05-06 — Phase 3 (App Launcher Rendering — WebContentsView)
+
+### What we built
+
+| Feature | Status | Files | Notes |
+| --- | --- | --- | --- |
+| `AppyDesktopBridge` contract | shipped | `packages/appydave/src/bridge.ts` | `showWebview` / `hideWebview` / `resizeWebview` + `Window.appyBridge` global |
+| Preload bridge registration | shipped | `apps/desktop/src/appydave/appyBridge.ts` | `contextBridge.exposeInMainWorld("appyBridge", {...})` |
+| WebContentsView IPC handlers | shipped | `apps/desktop/src/appydave/appyIpcHandlers.ts` | Show/hide/resize + navigation policy (cross-origin → shell.openExternal) |
+| URL + bounds validators | shipped | `apps/desktop/src/appydave/externalBrowser.ts` | `validateAppyUrl`, `parseViewBounds` |
+| `/apps/$id` route | shipped | `apps/web/src/routes/apps.$id.tsx` | TanStack file-based route |
+| `WebviewPane` component | shipped | `apps/web/src/appydave/apps/WebviewPane.tsx` | IPC lifecycle, ResizeObserver, error/retry UI, non-Electron fallback |
+| `handleActivate` wiring | shipped | `apps/web/src/appydave/apps/AppyAppsSection.tsx` | openExternal → `desktopBridge.openExternal`; embedded → navigate |
+| ADR-0003 | shipped | `.appydave/kdd/decisions/adr-0003-webcontentsview-for-embedded-apps.md` | WebContentsView locked (Electron 40.9.3) |
+
+### Delivery Review outcome
+
+**FAIL** — 6 reject-class findings. See `.appydave/docs/delivery-review-phase-3.md`.
+Phase 3.1 patch session required before this feature is production-ready.
+
+### Deferred (Phase 3.1)
+
+| Patch | Severity | Description |
+| --- | --- | --- |
+| P1 shell.openExternal validation | Critical | Validate URL before passing to OS shell |
+| P2 devicePixelRatio | Critical | Retina display scaling missing |
+| P3 activeViews cleanup | Critical | webContents.destroyed listener |
+| P4 store win reference | Critical | Wrong window for removeChildView |
+| P5 dedup guard | Critical | One view per URL in SHOW handler |
+| P6 openInExternalBrowser | Critical | AC-8 contract mismatch |
+| P7 did-fail-load | High | Network errors not shown in error UI |
+| P8 try/catch new URL() | High | Crash vector in will-navigate handler |
+| P9 channels.ts | High | Channel constant single source of truth |
+| P10 externalBrowser.test.ts | High | Security gate has no tests |
