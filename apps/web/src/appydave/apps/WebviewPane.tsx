@@ -21,12 +21,11 @@ export function WebviewPane({ app }: Props) {
     if (!window.appyBridge) return; // non-Electron env
 
     const rect = el.getBoundingClientRect();
-    const dpr = window.devicePixelRatio;
     const bounds = {
-      x: Math.round(rect.left * dpr),
-      y: Math.round(rect.top * dpr),
-      width: Math.round(rect.width * dpr),
-      height: Math.round(rect.height * dpr),
+      x: Math.round(rect.left),
+      y: Math.round(rect.top),
+      width: Math.round(rect.width),
+      height: Math.round(rect.height),
     };
 
     let cancelled = false;
@@ -60,12 +59,11 @@ export function WebviewPane({ app }: Props) {
     const observer = new ResizeObserver(() => {
       if (viewIdRef.current === null) return;
       const rect = el.getBoundingClientRect();
-      const dpr = window.devicePixelRatio;
       void window.appyBridge?.resizeWebview(viewIdRef.current, {
-        x: Math.round(rect.left * dpr),
-        y: Math.round(rect.top * dpr),
-        width: Math.round(rect.width * dpr),
-        height: Math.round(rect.height * dpr),
+        x: Math.round(rect.left),
+        y: Math.round(rect.top),
+        width: Math.round(rect.width),
+        height: Math.round(rect.height),
       });
     });
     observer.observe(el);
